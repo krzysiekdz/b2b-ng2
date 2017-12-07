@@ -1,0 +1,58 @@
+modyfikacje w spa :
+bootstrap
+model: account
+controller: account
+
+baza danych - nowe pola:
+bs_contractors: b2b_status, b2b_branch, b2b_prefix
+bs_sessions
+bs_templates
+bsw_mpserialsonline: b2b_wid
+
+
+
+//----------------------
+B2B todo list:
+
+menu-mobilne
+responsynowsc - przyciski
+	linki-zeby nie przeladowywalo w artykulach
+	szablony-tylko glowny admin
+filtr oddziały
+cache - oddziały, programy
+profil uzytkownika - oddział - wypisac pełne dane oddziału
+odswiez klucze - 2 razy pobiera credits
+czcionki w naglowkach stron
+wszedzie gdzie robie refresh ustawiac bledy na false, bo wtedy odswiezenie komponentu i tak pokaze blad bo nigdzie potem nie zeruje bledu
+linki - odswiez liste, dodaj ... - posprawdzac
+
+edycja - wczytywac dane, jesli sa - z listy przekazywac w parametrze i wtedy nei pobierac danych - bo juz są
+zrobic cache podstawowych danych i tam gdzie nie trzeba, nie pobierac ich
+angular2 - ciasteczka zeby odbierac i wysylac
+
+
+allow origin - zmienic potem w serwerze
+dziwny blad - po ponownym zalogowaniu nie mozna schowac formularza do edycji (gdy sie go rozsunie)
+
+pomysly na pozniej:
+po edycji powrot na modyfikowany element (przewiniecie na stronie i ładne podswietlenie na chwile)
+
+
+ 	skrolowanie-czasem sie przycina - wina - efekt przechodzenia  w gore i ladnego pojawiania  sie strony
+
+
+//===================
+
+
+
+UPDATE bsw_mpserialsonline SET widcontractor=683 WHERE id>3300;
+UPDATE bs_contractors SET pemail='admin1@binsoft.pl' WHERE id=683;
+
+delete from bs_contractors where id=667;
+SELECT id FROM bs_contractors WHERE pemail LIKE '%admin%';
+
+
+//---------------
+spa 
+ukrywanie ceny
+bs_stockindex pole wopc_price

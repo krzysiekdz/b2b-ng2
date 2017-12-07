@@ -1,0 +1,53 @@
+<div *ngIf="app_loading" class="m-page-loader m-page-loader--non-block" style="margin-left: -80px; margin-top: -20px;">
+	<div class="m-blockui">
+		<span>
+			Ładowanie strony...
+		</span>
+		<span>
+			<div class="m-loader m-loader--brand"></div>
+		</span>
+	</div>
+</div>
+
+<div style="position: fixed; z-index: 100; display: none;" id="loading_component">
+	<div class="m-blockui">
+		<span>
+			Wczytywanie ..
+		</span>
+		<span>
+			<div class="m-loader m-loader--brand"></div>
+		</span>
+	</div>
+</div>
+
+<router-outlet *ngIf="!app_loading" ></router-outlet>
+
+<div class="modal fade" id="m_modal_main" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="m_modal_main_title">
+					Tytuł
+				</h5>
+				<button type="button" style="cursor: pointer;" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">
+						&times;
+					</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p id="m_modal_main_body">
+					treść
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">
+					Zamknij
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

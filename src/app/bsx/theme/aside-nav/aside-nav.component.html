@@ -1,0 +1,111 @@
+<!-- BEGIN: Aside Menu -->
+<div  		id="m_ver_menu"  		class="m-aside-menu m-aside-left m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark"  		data-menu-vertical="true" 		 data-menu-scrollable="false" data-menu-dropdown-timeout="500"  >
+	<ul class="m-menu__nav  m-menu__nav--dropdown-submenu-arrow" >
+
+		<li class="m-menu__item  " routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"  aria-haspopup="true" >
+			<a  routerLink="//index/user" class="m-menu__link">
+				<i class="m-menu__link-icon flaticon-user"></i>
+				<span class="m-menu__link-title">
+					<span class="m-menu__link-wrap">
+						<span class="m-menu__link-text">
+							Mój profil
+						</span>
+					</span>
+				</span>
+			</a>
+		</li>
+
+		
+
+		<li *ngIf="admin" class="m-menu__item  m-menu__item--submenu" aria-haspopup="true"  data-menu-submenu-toggle="hover">	
+			<a  href="#" class="m-menu__link m-menu__toggle">
+				<i class="m-menu__link-icon flaticon-technology"></i>
+				<span class="m-menu__link-text">
+					Firma
+				</span>
+				<i class="m-menu__ver-arrow la la-angle-right"></i>
+			</a>
+			<div class="m-menu__submenu">
+				<ul class="m-menu__subnav">
+					<li class="m-menu__item" routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"  aria-haspopup="true" >
+						<a  routerLink="{{branches_link}}" class="m-menu__link">
+							<i class="m-menu__link-bullet m-menu__link-bullet--dot">
+								<span></span>
+							</i>
+							<span class="m-menu__link-text">
+								Oddziały
+							</span>
+						</a>
+					</li>
+					<li class="m-menu__item" routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"  aria-haspopup="true" >
+						<a  routerLink="{{users_link}}" class="m-menu__link">
+							<i class="m-menu__link-bullet m-menu__link-bullet--dot">
+								<span></span>
+							</i>
+							<span class="m-menu__link-text">
+								Pracownicy
+							</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</li>
+
+		<li *ngIf="admin_br" class="m-menu__item  " routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"  aria-haspopup="true" >
+			<a  routerLink="{{users_link}}" class="m-menu__link">
+				<i class="m-menu__link-icon flaticon-users"></i>
+				<span class="m-menu__link-title">
+					<span class="m-menu__link-wrap">
+						<span class="m-menu__link-text">
+							Pracownicy
+						</span>
+					</span>
+				</span>
+			</a>
+		</li>
+
+		<li class="m-menu__item  " routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"  aria-haspopup="true" >
+			<a  routerLink="{{keys_link}}" class="m-menu__link">
+				<i class="m-menu__link-icon la la-key"></i>
+				<span class="m-menu__link-title">
+					<span class="m-menu__link-wrap">
+						<span class="m-menu__link-text">
+							Klucze
+						</span>
+					</span>
+				</span>
+			</a>
+		</li>
+
+		<li *ngIf="admin" class="m-menu__item  " routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"  aria-haspopup="true" >
+			<a  routerLink="//index/templates/list" class="m-menu__link">
+				<i class="m-menu__link-icon flaticon-interface-6"></i>
+				<span class="m-menu__link-title">
+					<span class="m-menu__link-wrap">
+						<span class="m-menu__link-text">
+							Szablony
+						</span>
+					</span>
+				</span>
+			</a>
+		</li>
+
+		<li class="m-menu__item  " routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"  aria-haspopup="true" >
+			<a  routerLink="//b2b-baza-wiedzy" class="m-menu__link">
+				<i class="m-menu__link-icon socicon-buffer"></i>
+				<span class="m-menu__link-title">
+					<span class="m-menu__link-wrap">
+						<span class="m-menu__link-text">
+							Baza wiedzy
+						</span>
+					</span>
+				</span>
+			</a>
+		</li>
+
+		
+
+
+	</ul>
+</div>
+<!-- END: Aside Menu -->

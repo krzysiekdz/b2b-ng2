@@ -1,0 +1,516 @@
+<div class="row">
+    <div class="col-12" >
+
+    <div *ngIf="error" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Błąd!</strong>Nie można pobrać danych z serwera. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+    </div>
+
+    <div *ngIf="err.err_create" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Błąd!</strong>Nastąpił błąd podczas próby dodania nowego użytkownika. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+    </div>
+
+    <div *ngIf="err.err_edit" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Błąd!</strong>Nastąpił błąd podczas próby modyfikacji danych użytkownika. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+    </div>
+
+    <div *ngIf="disable_form" class="m-alert m-alert--outline m-alert--outline-2x alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Uwaga!</strong>Musisz utworzyć co najmniej jeden oddział, by móc dodawać/edytować pracowników. Aby to zrobić, przejdź do zakładki Firma->Oddziały.
+    </div>
+
+    <div *ngIf="msg_edit" class="m-alert m-alert--outline m-alert--outline-2x alert alert-success alert-dismissible fade show anim1" role="alert">
+        <strong>OK!</strong> Dane zmodyfikowane pomyslnie.
+    </div>
+
+    <div *ngIf="!disable_form && !(route_type=='user')" class="m-portlet m-portlet--tab" >
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title" >
+                        <span class="m-portlet__head-icon ">
+                            <i class="flaticon flaticon-user-add"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            <span *ngIf="route_type==='add'" >Dodawanie nowego pracownika</span>
+                            <span *ngIf="route_type==='edit'" >Edycja pracownika</span>
+                        </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+                             <a  (click)="goback()" title="powrót" href="javascript:;" class="m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dropdown__toggle">
+                                <i class="fa fa-arrow-left"></i>
+                            </a>
+                           
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            
+        </div>
+
+        <!--begin::Form-->
+        
+        <form #form_user="ngForm"  class="m-form m-form--fit m-form--label-align-right">
+            <div class="m-portlet__body">
+                <div class="row" >
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group m-form__group" [class.has-danger]="err.name">
+                            <label for="pname">
+                                Imię i Nazwisko:
+                            </label>
+                            <input [(ngModel)]="model.name"  name="pname" required type="text" class="form-control m-input m-input--square" id="pname" aria-describedby="pnameHelp" placeholder="Imię i nazwisko">
+                            <div *ngIf="err.name" class="form-control-feedback">
+                                {{err.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group m-form__group" [class.has-danger]="err.email">
+                            <label for="pemail">
+                                Adres e-mail:
+                            </label>
+                            <input  [(ngModel)]="model.email" name="pemail" required type="email" class="form-control m-input m-input--square" id="pemail" aria-describedby="emailHelp" placeholder="E-mail">
+                            <span class="m-form__help" *ngIf="route_type==='add'">
+                                To będzie login tego użytkownika
+                            </span>
+                             <span class="m-form__help" *ngIf="route_type==='edit'">
+                                Adres e-mail to login użytkownika
+                            </span>
+                            <div *ngIf="err.email" class="form-control-feedback">
+                                {{err.email}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-lg-12">&nbsp;</div> -->
+ 
+                    <div class="col-md-12 col-lg-6" style="" *ngIf="route_type!='user'">    
+                        <div class="form-group m-form__group" [class.has-danger]="err.branch">
+                            <label for="pbranch">
+                                Oddział:
+                            </label>
+                            <div></div>
+                            <!-- <select [disabled]="admin_br" name="pbranch" [(ngModel)]="model.branch" class="custom-select" style="width: 100%; cursor: pointer;">
+                                <option  *ngFor="let b of branches" [class.selected]="" value="{{b.id}}">
+                                    {{b.name}}
+                                </option>
+                            </select> -->
+                            <div class="m-form__control" *ngIf="branches.length>0">
+                                <div class="btn-group bootstrap-select form-control m-bootstrap-select ">
+                                    <button type="button" class="btn dropdown-toggle bs-placeholder btn-default" data-toggle="dropdown" role="button" title="{{model.branch.name}}">
+                                        <span class="filter-option pull-left">{{model.branch.name}}</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span>
+                                    </button>
+                                    <div class="dropdown-menu open" role="combobox" x-placement="bottom-start" >
+                                        <ul class="dropdown-menu inner ul__1" role="listbox" >
+                                            <li *ngFor="let b of branches;" (click)="selectBranch(b)" [class.selected]="model.branch.id==b.id">
+                                                <a >
+                                                    <span class="text">{{b.name}}</span>
+                                                    <span class="glyphicon glyphicon-ok check-mark"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>    
+                                </div>
+                            </div>
+                            <div *ngIf="err.branch" class="form-control-feedback">
+                                {{err.branch}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-6" style="" *ngIf="route_type!='user'">
+                        <div class="form-group m-form__group" style=" margin-top: 12px;">
+                            <label for="pstatus">
+                                Status użytkownika:
+                            </label>
+                            <div class="m-radio-inline" >
+                                <label class="m-radio">
+                                    <input type="radio" [(ngModel)]="model.status"  name="pstatus" value="20" checked>
+                                    Pracownik
+                                    <span></span>
+                                </label>
+                                <label class="m-radio">
+                                    <input type="radio" [(ngModel)]="model.status" name="pstatus" value="10">
+                                    Administrator oddziału
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="col-lg-12">&nbsp;</div>
+                   
+
+
+                   
+
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group m-form__group " [class.has-danger]="err.pass1" >
+                            <label for="ppass1">
+                                <span *ngIf="route_type==='add'">Hasło dla nowego użytkownika:</span>
+                                <span *ngIf="route_type==='edit'">Nowe hasło :</span>
+                                <span *ngIf="route_type==='user'">Nowe hasło :</span>
+                            </label>
+                            <input  [(ngModel)]="model.pass1" name="ppass1" required type="password" class="form-control m-input m-input--square" id="ppass1" placeholder="Podaj nowe hasło aby zmodyfikować stare">
+                            <span class="m-form__help m--font-success" *ngIf="(model.pass1.length > 0) && (route_type==='edit')">
+                                Modyfikujesz hasło dla tego użytkownika.
+                            </span>
+                            <span class="m-form__help m--font-success" *ngIf="(model.pass1.length > 0) && (route_type==='user')">
+                                Modyfikujesz swoje hasło.
+                            </span>
+                            <div *ngIf="err.pass1" class="form-control-feedback">
+                                {{err.pass1}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group m-form__group" [class.has-danger]="err.pass2">
+                            <label for="ppass2">
+                                Powtórz hasło: 
+                            </label>
+                            <input  [(ngModel)]="model.pass2" name="ppass2" required type="password" class="form-control m-input m-input--square" id="ppass2" placeholder="Hasło">
+                            <div *ngIf="err.pass2" class="form-control-feedback">
+                                {{err.pass2}}
+                            </div>
+                        </div>
+                       
+                    </div>
+
+                    
+
+
+
+                </div>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <button class="btn btn-metal" (click)="action()" [ngClass]="{'m-loader m-loader--right m-loader--light': loading}" [disabled]="loading" >
+                        <span *ngIf="route_type==='add'">Dodaj</span>
+                        <span *ngIf="route_type==='edit' || route_type==='user'">Zapisz</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!--end::Form-->
+    </div>
+
+
+     <div class="m-portlet m-portlet--tab" *ngIf="route_type=='user'">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title" >
+                        <span class="m-portlet__head-icon ">
+                            <i class="flaticon flaticon-user"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            <span *ngIf="admin">Dane Twojej firmy:</span>
+                            <span *ngIf="!admin">Twoje dane:</span>
+                        </h3>
+                </div>
+            </div>
+        </div>
+
+       
+
+            <div class="m-portlet__body" >
+                
+                <div class="row" >                     
+                     <div class="col-md-12 form-group m-form__group row align-items-center" >
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group"  >
+                                <label >
+                                    <span *ngIf="admin">Nazwa firmy:</span> 
+                                    <span *ngIf="!admin">Imię i Nazwisko</span> 
+                                    <span class="m--font-bolder">{{user.name}}</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6" *ngIf="admin">
+                            <div class="form-group m-form__group" >
+                                <label >
+                                    NIP : <span class="m--font-bolder">{{user.nip}}</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6" *ngIf="admin">
+                            <div class="form-group m-form__group" >
+                                <label >
+                                    Adres : <span class="m--font-bolder">{{user.postcode}} {{user.city}}</span>, {{user.street}} {{user.street_n1}}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group" >
+                                <label >
+                                    E-mail : <span class="m--font-bolder">{{user.email}}</span>
+                                </label>
+                            </div>
+                        </div>
+
+                         <div class="col-md-12 col-lg-6" *ngIf="admin">
+                            <div class="form-group m-form__group" >
+                                <label >
+                                    Numer telefonu : <span class="m--font-bolder">{{user.phone}}</span>
+                                </label>
+                            </div>
+                        </div>
+
+                         <div class="col-md-12 col-lg-6" *ngIf="admin">
+                            <div class="form-group m-form__group" >
+                                <label >
+                                    Kraj : <span class="m--font-bolder"> Polska </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6" *ngIf="!admin">
+                            <div class="form-group m-form__group" >
+                                <label >
+                                    Oddział : <span class="m--font-bolder">{{user.branch_name}}</span>
+                                </label>
+                            </div>
+                        </div>
+
+                       
+                    </div>
+
+                   
+                </div>
+                    
+            </div>
+        
+
+    </div>
+
+    
+     <div class="m-portlet m-portlet--tab" *ngIf="route_type=='user'">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title" >
+                        <span class="m-portlet__head-icon ">
+                            <i class="flaticon flaticon-list-2"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            <h3 class="m-portlet__head-text">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="collapse" data-target="#admin_form"  aria-expanded="false" aria-controls="collapseExample">
+                                <span >Modyfikuj dane</span>
+                            </button>
+                        </h3>
+                        </h3>
+                </div>
+            </div>
+            
+        </div>
+
+        <!--begin::Form-->
+
+        <!-- [class.show]="!collapsed && !collapsing" [class.collapsing]="collapsing" -->
+        
+        <div  class="m-form m-form--fit m-form--label-align-right collapse"  id="admin_form"  >
+
+            <form #form_admin="ngForm"  class="m-form m-form--fit m-form--label-align-right"   >
+            <div class="m-portlet__body" >
+                
+                <div class="col-md-12 form-group m-form__group row align-items-center" >
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group" [class.has-danger]="err.name">
+                                <label for="pname">
+                                    <span *ngIf="admin">Nazwa firmy:</span> 
+                                    <span *ngIf="!admin">Imię i Nazwisko</span> 
+                                </label>
+                                <input [(ngModel)]="model.name" name="pname" type="text" class="form-control m-input m-input--square" id="pname"  placeholder="Nazwa firmy">
+                                <div *ngIf="err.name" class="form-control-feedback">
+                                    {{err.name}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6" *ngIf="admin">
+                            <div class="form-group m-form__group" [class.has-danger]="err.nip">
+                                <label for="pnip">
+                                    NIP:
+                                </label>
+                                <input [(ngModel)]="model.nip" name="pnip" type="text" class="form-control m-input m-input--square" id="pnip"  placeholder="NIP">
+                                <div *ngIf="err.nip" class="form-control-feedback">
+                                    {{err.nip}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" *ngIf="admin">&nbsp;</div>
+
+                        <div class="col-md-12 col-lg-6" *ngIf="admin">
+                            <div class="form-group m-form__group" [class.has-danger]="err.city">
+                                <label for="pcity">
+                                    Miasto:
+                                </label>
+                                <input [(ngModel)]="model.city" name="pcity" type="text" class="form-control m-input m-input--square" id="pcity"  placeholder="Miasto">
+                                <div *ngIf="err.city" class="form-control-feedback">
+                                    {{err.city}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6" *ngIf="admin">
+                            <div class="form-group m-form__group" [class.has-danger]="err.postcode">
+                                <label for="ppostcode">
+                                    Kod pocztowy:
+                                </label>
+                                <input [(ngModel)]="model.postcode" name="ppostcode" type="text" class="form-control m-input m-input--square" id="ppostcode"  placeholder="Kod pocztowy">
+                                <div *ngIf="err.postcode" class="form-control-feedback">
+                                    {{err.postcode}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" *ngIf="admin">&nbsp;</div>
+
+                        <div class="col-md-12 col-lg-6" *ngIf="admin">
+                            <div class="form-group m-form__group" [class.has-danger]="err.street">
+                                <label for="pstreet">
+                                    Ulica:
+                                </label>
+                                <input [(ngModel)]="model.street" name="pstreet" type="text" class="form-control m-input m-input--square" id="pstreet"  placeholder="Ulica">
+                                <div *ngIf="err.street" class="form-control-feedback">
+                                    {{err.street}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6" *ngIf="admin">
+                            <div class="form-group m-form__group" [class.has-danger]="err.street_n1">
+                                <label for="pstreet_n">
+                                    Numer lokalu:
+                                </label>
+                                <input [(ngModel)]="model.street_n1" name="pstreet_n" type="text" class="form-control m-input m-input--square" id="pstreet_n"  placeholder="Numer lokalu">
+                                <div *ngIf="err.street_n" class="form-control-feedback">
+                                    {{err.street_n1}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" *ngIf="admin">&nbsp;</div>
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group" [class.has-danger]="err.email">
+                                <label for="pemail">
+                                    Adres e-mail:
+                                </label>
+                                <input [(ngModel)]="model.email" name="pemail" type="text" class="form-control m-input m-input--square" id="pemail"  placeholder="Adres e-mail">
+                                <div *ngIf="err.email" class="form-control-feedback">
+                                    {{err.email}}
+                                </div>
+                            </div>
+                        </div>
+
+                         <div class="col-md-12 col-lg-6" *ngIf="admin">
+                            <div class="form-group m-form__group" [class.has-danger]="err.phone">
+                                <label for="pphone">
+                                    Numer telefonu:
+                                </label>
+                                <input [(ngModel)]="model.phone"  name="pphone" type="text" class="form-control m-input m-input--square" id="pphone"  placeholder="Numer telefonu">
+                                <div *ngIf="err.phone" class="form-control-feedback">
+                                    {{err.phone}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">&nbsp;</div>
+
+                        
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group " [class.has-danger]="err.pass1" >
+                                <label for="ppass1">
+                                    Nowe hasło:
+                                </label>
+                                <input  [(ngModel)]="model.pass1" name="ppass1" required type="password" class="form-control m-input m-input--square" id="ppass1" placeholder="Podaj nowe hasło aby zmodyfikować stare">
+                                <span class="m-form__help m--font-success" *ngIf="(model.pass1.length > 0)">
+                                    Modyfikujesz swoje hasło.
+                                </span>
+                                <div *ngIf="err.pass1" class="form-control-feedback">
+                                    {{err.pass1}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group" [class.has-danger]="err.pass2">
+                                <label for="ppass2">
+                                    Powtórz hasło: 
+                                </label>
+                                <input  [(ngModel)]="model.pass2" name="ppass2" required type="password" class="form-control m-input m-input--square" id="ppass2" placeholder="Hasło">
+                                <div *ngIf="err.pass2" class="form-control-feedback">
+                                    {{err.pass2}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">&nbsp;</div>
+
+                        <div class="col-md-12 col-lg-6" *ngIf="admin">
+                            <div class="form-group m-form__group">
+                                <label for="pcountry">
+                                    Kraj:
+                                </label>
+                                <div class="btn-group bootstrap-select form-control m-bootstrap-select m_">
+                                    <button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="Polska" aria-expanded="false">
+                                        <span class="filter-option pull-left">
+                                            Polska
+                                        </span>&nbsp;<span class="bs-caret"><span class="caret"></span></span>
+                                    </button>
+                                    <div class="dropdown-menu open" role="combobox" x-placement="bottom-start">
+                                        <ul class="dropdown-menu inner" role="listbox" aria-expanded="false">
+                                            <li data-original-index="0" class="selected">
+                                                <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true">
+                                                    <span class="text">
+                                                    Polska
+                                                    </span><span class="glyphicon glyphicon-ok check-mark"></span>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                       
+
+                    </div>
+                    
+            </div>
+
+             <div class="m-portlet__foot m-portlet__foot--fit" >
+                <div class="m-form__actions">
+                    <button class="btn btn-metal" (click)="action()" [ngClass]="{'m-loader m-loader--right m-loader--light': loading}" [disabled]="loading" >
+                        <span>Zapisz</span>
+                    </button>
+                </div>
+            </div>
+
+            </form>
+        
+
+
+        </div>
+
+        <!--end::Form-->
+    </div>
+
+
+
+
+    </div>
+</div>
+

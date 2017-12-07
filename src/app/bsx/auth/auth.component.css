@@ -1,0 +1,21 @@
+@keyframes login_anim {
+	from {border-left: 5px solid #5dba1f;}
+	to {border-left: inherit;}
+}
+
+
+#form_auth .ng-invalid.ng-dirty {
+	border-left: 5px solid red;
+}
+
+#form_auth .ng-dirty.email-invalid {
+	border-left: 5px solid red;
+}
+
+#form_auth .ng-valid.ng-dirty:not(.email-invalid) {
+	/*border-left: 5px solid #5dba1f;*/
+	animation-name: login_anim;
+	animation-duration: 2s;
+}
+
+

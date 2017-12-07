@@ -1,0 +1,15 @@
+@media (max-width: 992px) {
+	#m_header_topbar.m-topbar {
+		top:-70px;
+	}
+
+	.m-topbar--on  #m_header_topbar.m-topbar  {
+		top:0px;
+	}
+
+	#m_header_menu {
+		display: none;
+	}
+}
+
+

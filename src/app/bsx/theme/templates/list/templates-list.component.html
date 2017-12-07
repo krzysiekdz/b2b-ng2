@@ -1,0 +1,77 @@
+
+<div *ngIf="error" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Błąd!</strong> Nastąpił błąd podczas wczytywania danych z serwera. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+</div>
+
+<div *ngIf="msg_edit" class="m-alert m-alert--outline m-alert--outline-2x alert alert-success alert-dismissible fade show anim1" role="alert">
+    Szablon <strong>{{msg_edit}}</strong> zmodyfikowany pomyślnie.
+</div>
+
+<div   class="m-portlet m-portlet--mobile" >
+
+<div class="m-portlet__head">
+	<div class="m-portlet__head-caption">
+		<div class="m-portlet__head-title">
+			<h3 class="m-portlet__head-text bk">
+				Twoje  szablony
+			</h3>
+		</div>
+	</div>
+	
+</div>
+<div class="m-portlet__body">
+	<!--begin: Search Form -->
+	
+<!--end: Search Form -->
+
+
+
+<!--begin: Datatable -->
+<div  class="m_datatable m-datatable m-datatable--default m-datatable--loaded" id="column_rendering" >
+     <table class="m-datatable__table" id="templates_table" style="display: block; height: auto; overflow-x: auto;" >
+        <thead class="m-datatable__head">
+            <tr class="m-datatable__row" style="height: 56px;">
+                
+                <th data-field="f1" class="m-datatable__cell w1_hide" ><span class="w1">Szablony</span>
+                </th>
+                <th data-field="f2" class="m-datatable__cell" ><span class="w2"></span>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="m-datatable__body" style="" *ngIf="!error">
+
+
+            <tr  *ngFor="let t of templates; even as e;" class="m-datatable__row "  style="height: 62px;" [ngClass]="{'m-datatable__row--even':e,'m-datatable__row--hover':(mouseOnElement===t)}" (mouseleave)="deselectMouseOnElement()" (mouseenter)="setMouseOnElement(t)">
+              
+                <td data-field="f1" class="m-datatable__cell w1_hide clickable" title="Edytuj" (click)="goToEdit(t.id)">
+                    <div class="w1" >
+                        <div style="" class="m--font-bolder">
+                            {{t.type.name}}
+                        </div>
+                        
+                    </div>
+                </td>
+               <td data-field="f2" class="m-datatable__cell w2_hide" >
+                    <span style="overflow: visible; " class="w2">                                     
+                        <a routerLink="//index/templates/edit/{{t.id}}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edytuj">
+                            <i class="la la-edit"></i>                      
+                        </a>                                  
+                    </span>
+                </td>
+                
+            </tr>
+        </tbody>
+    </table>
+
+
+
+</div>
+
+		<!--end: Datatable -->
+	</div>
+</div>
+
+
+
+
+

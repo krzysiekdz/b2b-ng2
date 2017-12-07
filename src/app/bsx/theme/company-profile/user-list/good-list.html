@@ -1,0 +1,249 @@
+<div *ngIf="error" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Błąd!</strong>Nastąpił błąd podczas wczytywania listy użytkowników. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+</div>
+
+ <div *ngIf="err_delete" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show anim1" role="alert">
+    <strong>Błąd!</strong>Nastąpił błąd podczas próby usuwania użytkownika. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+</div>
+
+<div *ngIf="msg_add" class="m-alert m-alert--outline m-alert--outline-2x alert alert-success alert-dismissible fade show anim1" role="alert">
+    <strong>OK!</strong>Użytkownik dodany pomyślnie.
+</div>
+
+<div *ngIf="msg_edit" class="m-alert m-alert--outline m-alert--outline-2x alert alert-success alert-dismissible fade show anim1" role="alert">
+    Użytkownik <strong>{{msg_edit}}</strong> zmodyfikowany pomyślnie.
+</div>
+
+
+<div *ngIf="!error" class="m-portlet m-portlet--mobile" >
+
+<div class="m-portlet__head">
+	<div class="m-portlet__head-caption">
+		<div class="m-portlet__head-title">
+			<h3 class="m-portlet__head-text">
+				Lista wszystkich pracowników
+			</h3>
+		</div>
+	</div>
+	<div class="m-portlet__head-tools">
+		<ul class="m-portlet__nav">
+			<li class="m-portlet__nav-item">
+				<div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+					<a routerLink="../list" class="
+m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dropdown__toggle">
+						<i class="la la-plus m--hide"></i>
+						<i class="la la-ellipsis-h m--font-brand"></i>
+					</a>
+					<div class="m-dropdown__wrapper">
+						<span class="m-dropdown__arrow m-dropdown__arrow--right m-dropdown__arrow--adjust"></span>
+						<div class="m-dropdown__inner">
+							<div class="m-dropdown__body">
+								<div class="m-dropdown__content">
+									<ul class="m-nav">
+										<li class="m-nav__section m-nav__section--first">
+											<span class="m-nav__section-text">
+												Operacje
+											</span>
+										</li>
+										<li class="m-nav__item">
+											<a routerLink="../list" class="m-nav__link" (click)="refresh()">
+												<i class="m-nav__link-icon flaticon-refresh"></i>
+												<span class="m-nav__link-text">
+													Odswież listę
+												</span>
+											</a>
+										</li>
+										<li class="m-nav__item">
+											<a routerLink="../add" class="m-nav__link">
+												<i class="m-nav__link-icon flaticon-user-add"></i>
+												<span class="m-nav__link-text">
+													Dodaj użytkownika
+												</span>
+											</a>
+										</li>
+										<!-- <li class="m-nav__item">
+											<a href="" class="m-nav__link">
+												<i class="m-nav__link-icon flaticon-multimedia-2"></i>
+												<span class="m-nav__link-text">
+													Upload File
+												</span>
+											</a>
+										</li>
+										<li class="m-nav__section">
+											<span class="m-nav__section-text">
+												Useful Links
+											</span>
+										</li>
+										<li class="m-nav__item">
+											<a href="" class="m-nav__link">
+												<i class="m-nav__link-icon flaticon-info"></i>
+												<span class="m-nav__link-text">
+													FAQ
+												</span>
+											</a>
+										</li>
+										<li class="m-nav__item">
+											<a href="" class="m-nav__link">
+												<i class="m-nav__link-icon flaticon-lifebuoy"></i>
+												<span class="m-nav__link-text">
+													Support
+												</span>
+											</a>
+										</li>
+										<li class="m-nav__separator m-nav__separator--fit m--hide"></li>
+										<li class="m-nav__item m--hide">
+											<a href="#" class="btn btn-outline-danger m-btn m-btn--pill m-btn--wide btn-sm">
+												Submit
+											</a>
+										</li> -->
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="m-portlet__body">
+	<!--begin: Search Form -->
+	<div class="m-form m-form--label-align-right m--margin-top-20 m--margin-bottom-30">
+		<div class="row align-items-center">
+			<div class="col-xl-8 order-2 order-xl-1">
+				<div class="form-group m-form__group row align-items-center">
+					
+					<div class="col-md-4">
+						<div class="m-input-icon m-input-icon--left">
+							<input type="text" name="search_query" [(ngModel)]="search_query" (input)="search()" class="form-control m-input m-input--solid" placeholder="Wyszukaj..." id="m_form_search">
+							<span class="m-input-icon__icon m-input-icon__icon--left">
+								<span>
+									<i class="la la-search"></i>
+								</span>
+							</span>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-xl-4 order-1 order-xl-2 m--align-right">
+				<a routerLink="//index/company_users/add" class="btn btn-accent m-btn m-btn--custom m-btn--icon m-btn--air">
+					<span>
+						<i class="flaticon flaticon-user-add"></i>
+						<span>
+							Dodaj
+						</span>
+					</span>
+				</a>
+				<div class="m-separator m-separator--dashed d-xl-none"></div>
+			</div>
+		</div>
+	</div>
+<!--end: Search Form -->
+
+
+
+<!--begin: Datatable -->
+<div  class="m_datatable m-datatable m-datatable--default m-datatable--loaded" id="column_rendering" style="" >
+     <table class="m-datatable__table" id="m-datatable--1335391329591" style="display: block; height: auto; overflow-x: auto;" border="1">
+        <thead class="m-datatable__head">
+            <tr class="m-datatable__row" style="height: 56px;">
+                
+                <th data-field="f1" class="m-datatable__cell w1_hide" ><span class="w1">Klucz</span>
+                </th>
+                <th data-field="f2" class="m-datatable__cell" ><span class="w2">Program</span>
+                </th>
+                <th data-field="f3" class="m-datatable__cell " ><span class="w3">Dane klienta</span>
+                </th>
+                <th data-field="f4" class="m-datatable__cell w4_hide" ><span class="w4">Opłacono</span>
+                </th>
+                <th data-field="f5" class="m-datatable__cell w5_hide" ><span class="w5">Data aktywacji</span>
+                </th> 
+                
+                
+            </tr>
+        </thead>
+        <tbody class="m-datatable__body" style="" *ngIf="!error">
+
+
+            <tr *ngFor="let u of users; even as e;" data-row="0" class="m-datatable__row " [ngClass]="{'m-datatable__row--even':e}" style="height: 62px;" >
+              
+                <td data-field="f1" class="m-datatable__cell w1_hide" >
+                    <div class="w1" >
+                        <div style="" class="m--font-bolder">
+                            a
+                        </div>
+                        
+                    </div>
+                </td>
+                <td data-field="f2" class="m-datatable__cell ">
+                    <div class="w2">
+                        <div style=" " class="m--font-bolder">
+                            b
+                        </div>
+                       
+                    </div>
+                </td>
+                <td data-field="f3" class="m-datatable__cell" >
+                    <div class="w3" >   
+                        c
+                    </div>
+                </td>
+                <td data-field="f4" class="m-datatable__cell w4_hide" >
+                    <div class="w4">
+                       d
+                    </div>
+                </td>
+                <td data-field="f5" class="m-datatable__cell w5_hide" >
+                    <div class="w5">
+                       e
+                    </div>
+                </td>
+               
+               
+                
+            </tr>
+        </tbody>
+    </table>
+
+<div class="m-datatable__pager m-datatable--paging-loaded clearfix">
+    <ul class="m-datatable__pager-nav" *ngIf="pages_num>1" >
+        <li><a title="Początek" class="m-datatable__pager-link m-datatable__pager-link--first" (click)="goToBegin();" ><i class="la la-angle-double-left"></i></a>
+        </li>
+        <li><a title="Poprzedni" class="m-datatable__pager-link m-datatable__pager-link--prev" (click)="prev();" ><i class="la la-angle-left"></i></a>
+        </li>
+
+        <li *ngFor="let i of pages" >
+        	<a class="m-datatable__pager-link m-datatable__pager-link-number" [ngClass]="{'m-datatable__pager-link--active':i==this_page}" (click)="goToPage(i)"  > {{i}} </a>
+        </li>
+
+        <li><a title="Następny" class="m-datatable__pager-link m-datatable__pager-link--next" (click)="next();" ><i class="la la-angle-right"></i></a>
+        </li>
+        <li><a title="Ostatni" class="m-datatable__pager-link m-datatable__pager-link--last" (click)="goToEnd();" ><i class="la la-angle-double-right"></i></a>
+        </li>
+    </ul>
+    <div class="m-datatable__pager-info">
+        <div class="btn-group bootstrap-select m-datatable__pager-size" style="width: 70px;">
+            <button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="Wybierz rozmiar strony">
+            	<span class="filter-option pull-left"> {{count_fetch}} </span>&nbsp;<span class="bs-caret"><span class="caret"></span></span>
+            </button>
+            <div class="dropdown-menu open" role="combobox">
+                <ul class="dropdown-menu inner" role="listbox" aria-expanded="false">
+                    <li *ngFor="let s of page_sizes; index as i;" data-original-index="0" [class.selected]="page_size_selected==i" (click)="setPageSize(i)" >
+                    	<a tabindex="0"  data-tokens="null" role="option" aria-disabled="false">
+                    		<span class="text"> {{s}} </span>
+                    		<span class="glyphicon glyphicon-ok check-mark"></span>
+                    	</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <span class="m-datatable__pager-detail">Wyniki {{start_fetch}} - {{this_length+start_fetch-1}} z {{all_length}}  </span>
+    </div>
+</div>
+
+</div>
+
+		<!--end: Datatable -->
+	</div>
+</div>

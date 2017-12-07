@@ -1,0 +1,138 @@
+<div *ngIf="error" [innerHTML]="error">
+</div>
+
+<div *ngIf="!error" class="row">
+    <div class="col-12" >
+
+    <div *ngIf="error" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Błąd!</strong>Nie można pobrać danych z serwera. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+    </div>
+
+    <div *ngIf="err.err_create" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Błąd!</strong>Nastąpił błąd podczas próby utworzenia nowego oddziału. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+    </div>
+
+    <div *ngIf="err.err_edit" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Błąd!</strong>Nastąpił błąd podczas próby modyfikacji danych wybranego oddziału. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+    </div>   
+
+    <div class="m-portlet m-portlet--tab">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title" >
+                        <span class="m-portlet__head-icon ">
+                            <i class="flaticon flaticon-add"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            <span *ngIf="route_type==='add'" >Dodawanie nowego oddziału</span>
+                            <span *ngIf="route_type==='edit'" >Edytowanie oddziału</span>
+                        </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+                           <a  (click)="goback()" title="powrót" href="javascript:;" class="m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dropdown__toggle">
+                                <i class="fa fa-arrow-left"></i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            
+        </div>
+
+        <!--begin::Form-->
+        
+        <form #form_company_add="ngForm" class="m-form m-form--fit m-form--label-align-right">
+            <div class="m-portlet__body">
+                <div class="row" >
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group m-form__group" [class.has-danger]="err.name">
+                            <label for="pname">
+                                Nazwa oddziału
+                            </label>
+                            <input [(ngModel)]="model.name"  name="pname" required type="text" class="form-control m-input m-input--square" id="pname" aria-describedby="pnameHelp" placeholder="Nazwa odziału">
+                            <div *ngIf="err.name" class="form-control-feedback">
+                                {{err.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group m-form__group" [class.has-danger]="err.city">
+                            <label for="pcity">
+                                Miasto
+                            </label>
+                            <input [(ngModel)]="model.city"  name="pcity" required type="text" class="form-control m-input m-input--square" id="pcity"  placeholder="Miasto">
+                            <div *ngIf="err.city" class="form-control-feedback">
+                                {{err.city}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">&nbsp;</div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group m-form__group" [class.has-danger]="err.phone">
+                            <label for="pphone">
+                                Numer telefonu
+                            </label>
+                            <input [(ngModel)]="model.phone"  name="pphone" type="text" class="form-control m-input m-input--square" id="pphone"  placeholder="Numer telefonu">
+                            <div *ngIf="err.phone" class="form-control-feedback">
+                                {{err.phone}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group m-form__group" [class.has-danger]="err.postcode">
+                            <label for="ppostcode">
+                                Kod pocztowy
+                            </label>
+                            <input [(ngModel)]="model.postcode"  name="ppostcode" type="text" class="form-control m-input m-input--square" id="ppostcode"  placeholder="Kod pocztowy">
+                            <div *ngIf="err.postcode" class="form-control-feedback">
+                                {{err.postcode}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">&nbsp;</div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group m-form__group" [class.has-danger]="err.street">
+                            <label for="pstreet">
+                                Ulica
+                            </label>
+                            <input [(ngModel)]="model.street"  name="pstreet" type="text" class="form-control m-input m-input--square" id="pstreet"  placeholder="Nazwa ulicy">
+                            <div *ngIf="err.street" class="form-control-feedback">
+                                {{err.street}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-6">
+                        <div class="form-group m-form__group" [class.has-danger]="err.street_n">
+                            <label for="pstreet_n">
+                                Numer domu/mieszkania
+                            </label>
+                            <input [(ngModel)]="model.street_n"  name="pstreet_n" type="text" class="form-control m-input m-input--square" id="pstreet_n"  placeholder="Numer">
+                            <div *ngIf="err.street_n" class="form-control-feedback">
+                                {{err.street_n}}
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <button class="btn btn-metal" (click)="action()" [ngClass]="{'m-loader m-loader--right m-loader--light': loading}" [disabled]="loading" >
+                        <span *ngIf="route_type==='add'" >Dodaj</span>
+                        <span *ngIf="route_type==='edit'" >Zapisz</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!--end::Form-->
+    </div>
+    </div>
+</div>
+

@@ -1,0 +1,670 @@
+<div class="row">
+
+    <div class="col-12">
+        <div *ngIf="error" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Błąd!</strong>Nie można pobrać danych z serwera. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+        </div>
+
+        <div *ngIf="err.err_create" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Błąd!</strong>Nastąpił błąd podczas generowania klucza. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+        </div>
+
+        <div *ngIf="err.err_edit" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Błąd!</strong>Nastąpił błąd podczas modyfikacji danych z klucza. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+        </div>
+
+        <div *ngIf="disable_form" class="m-alert m-alert--outline m-alert--outline-2x alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Uwaga!</strong>Nie istnieją żadne programy na sprzedaż. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+        </div>
+    </div>
+
+    <div class="col-12" *ngIf="!disable_form && !error">
+
+     
+
+    <div class="m-portlet m-portlet--mobile" *ngIf="route_type=='add'">
+        <!-- <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        Basic Portlet
+                        <small>
+                            portlet sub title
+                        </small>
+                    </h3>
+                </div>
+            </div>
+        </div> -->
+        <div class="m-portlet__body">
+            Kwota kredytu kupieckiego <span style="font-weight: bold;"> {{credit_data.credit | number:'1.2-2'}} PLN</span>. Wykorzystano <span class="m--font-danger"> {{credit_data.price_sum | number:'1.2-2'}} PLN</span>. Poziom rabatowy <span style="font-weight: bold;"> {{credit_data.discount}} %</span>.
+        </div>
+    </div>
+
+
+    <div class="m-portlet m-portlet--tab" *ngIf="!disable_form && !error && route_type=='add'" >
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title" >
+                        <span class="m-portlet__head-icon ">
+                            <i class="la la-key"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            <span *ngIf="route_type==='add'" >Generowanie nowego klucza</span>
+                            <span *ngIf="route_type==='edit'" >Edycja klucza</span>
+                        </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+                            <a  (click)="goback()" title="powrót" href="javascript:;" class="m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dropdown__toggle">
+                                <i class="fa fa-arrow-left"></i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            
+        </div>
+
+        <!--begin::Form-->
+        
+        <form #form_key_gen="ngForm"  class="m-form m-form--fit m-form--label-align-right" >
+
+            <div class="m-portlet__body" >
+                <div class="row" >
+
+                    <div class="col-md-12 form-group m-form__group row align-items-center" >
+
+                        <div class="col-md-4" >
+                            <div class="m-form__group " >
+                                <div class="m-form__label">
+                                    <label>
+                                        Program:
+                                    </label>
+                                </div>
+                                <div class="m-form__control" *ngIf="selectedProgram">
+                                    <div class="btn-group bootstrap-select form-control m-bootstrap-select ">
+                                        <button type="button" class="btn dropdown-toggle bs-placeholder btn-default" data-toggle="dropdown" role="button" data-id="m_form_status" title="{{selectedProgram.name}}" aria-expanded="false">
+                                            <span class="filter-option pull-left">{{selectedProgram.name}}</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span>
+                                        </button>
+                                        <div class="dropdown-menu open dropdown__" role="combobox" x-placement="bottom-start" id="menu_list_1">
+                                            <ul class="dropdown-menu inner ul__1" role="listbox" aria-expanded="false" >
+                                                <li *ngFor="let p of programs;" (click)="selectProgram(p)" data-original-index="0" [class.selected]="selectedProgram.id==p.id">
+                                                    <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true">
+                                                        <span class="text">{{p.name}}</span>
+                                                        <span class="glyphicon glyphicon-ok check-mark"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>    
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-md-none m--margin-bottom-10"></div>
+                        </div>
+
+                       
+
+
+
+
+                        
+                        <div class="col-md-4" >
+                            <div class="m-form__group " *ngIf="selectedProgram">
+                                <div class="m-form__label">
+                                    <label>
+                                        <span *ngIf="!selectedProgram.options.limitparagonow">Liczba stanowisk / cena bazowa :</span>
+                                        <span *ngIf="selectedProgram.options.limitparagonow">Limit paragonów / cena bazowa :</span>
+                                    </label>
+                                </div>
+                                <div class="m-form__control" >
+                                    <div class="btn-group bootstrap-select form-control m-bootstrap-select " *ngIf="selectedProgram.prices">
+                                        <button type="button" class="btn dropdown-toggle bs-placeholder btn-default" data-toggle="dropdown" role="button" data-id="m_form_status"  aria-expanded="false">
+                                            <span class="filter-option pull-left"> 
+                                                <i class="flaticon flaticon-users" *ngIf="!selectedProgram.options.limitparagonow"></i>
+                                                <i class="flaticon flaticon-interface-7" *ngIf="selectedProgram.options.limitparagonow"></i>
+                                                <span class="m-badge m-badge--brand"> {{selectedPrice.items}} </span> 
+                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                                {{selectedPrice.price}} PLN
+                                            </span>&nbsp;<span class="bs-caret"><span class="caret"></span></span>
+                                        </button>
+                                        <div class="dropdown-menu open " role="combobox" x-placement="bottom-start" >
+                                            <ul class="dropdown-menu inner ul__1" role="listbox" aria-expanded="false" >
+                                                <li *ngFor="let p of selectedProgram.prices;" (click)="selectPrice(p)" data-original-index="0" [class.selected]="selectedPrice===p">
+                                                    <a tabindex="0" class=""  data-tokens="null" role="option" aria-disabled="false" >
+                                                        <span class="text">
+                                                            <i class="flaticon flaticon-users" *ngIf="!selectedProgram.options.limitparagonow"></i>
+                                                            <i class="flaticon flaticon-interface-7" *ngIf="selectedProgram.options.limitparagonow"></i>
+                                                            <span class="m-badge m-badge--brand"> {{p.items}} </span> 
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            {{p.price}} PLN
+                                                        </span>
+                                                        <span class="glyphicon glyphicon-ok check-mark"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>    
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-md-none m--margin-bottom-10"></div>
+                        </div>
+
+                        <div class="col-md-4" >
+                            <div class="m-form__group ">
+                                <div class="m-form__label">
+                                    <label>
+                                        Okres licencji:
+                                    </label>
+                                </div>
+                                <div class="m-form__control" *ngIf="selectedProgram">
+                                    <div class="btn-group bootstrap-select form-control m-bootstrap-select ">
+                                        <button type="button" class="btn dropdown-toggle bs-placeholder btn-default" data-toggle="dropdown" role="button" data-id="m_form_status"  aria-expanded="false">
+                                            <span class="filter-option pull-left">{{selectedDay.name}}</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span>
+                                        </button>
+                                        <div class="dropdown-menu open " role="combobox" x-placement="bottom-start" >
+                                            <ul class="dropdown-menu inner ul__1" role="listbox" aria-expanded="false" >
+                                                <li *ngFor="let d of days;" (click)="selectDay(d)" data-original-index="0" [class.selected]="selectedDay.id===d.id">
+                                                    <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true">
+                                                        <span class="text">{{d.name}}</span>
+                                                        <span class="glyphicon glyphicon-ok check-mark"></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>    
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-md-none m--margin-bottom-10"></div>
+                        </div>
+                            
+                </div>
+
+                <div class="col-md-12 form-group m-form__group row align-items-center" >
+                    <div class="col-md-4" >
+                        <div class="m-form__group">
+                            <label class="m-checkbox m-checkbox--state-brand">
+                                <input type="checkbox" name="trial" [(ngModel)]="model.trial" (change)="selectTrialDays()" >
+                                Wersja testowa
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" >
+                        <div class="m-form__group">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" >
+                        <div class="m-form__group form-group" [ngClass]="{'has-danger':price_limit}">
+                            <label>
+                                Cena: 
+                                <span class="m-badge m-badge--brand m-badge--wide m-badge--rounded" [ngClass]="{'m-badge--danger':price_limit}" style="font-size: 1.2em;">
+                                     {{ price | number:'1.2-2' }}
+                                </span>
+                                PLN
+                            </label>
+                            <div *ngIf="price_limit" class="form-control-feedback">
+                                Przekroczono kwote za jaką można sprzedawać klucze.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                    
+
+            </div>
+        </div>
+        <div class="m-portlet__foot m-portlet__foot--fit">
+            <div class="m-form__actions">
+                <button class="btn btn-metal" (click)="action()" [ngClass]="{'m-loader m-loader--right m-loader--light': loading}" [disabled]="loading" [disabled]="price_limit" >
+                    <span *ngIf="route_type==='add'">Generuj</span>
+                    <span *ngIf="route_type==='edit'">Zapisz</span>
+                </button>
+                <span *ngIf="price_limit" class="form-control-feedback m--font-danger">
+                    Nie można wygenerować klucza.
+                </span>
+                <span *ngIf="err.email" class="form-control-feedback m--font-danger">
+                    {{err.email}}
+                </span>
+            </div>
+        </div>
+        </form>
+
+        <!--end::Form-->
+    </div>
+
+
+
+
+
+
+    <div class="m-portlet m-portlet--tab" *ngIf="route_type=='edit'">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title" >
+                        <span class="m-portlet__head-icon ">
+                            <i class="la la-key"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            <h3 class="m-portlet__head-text">
+                            <button id="btn_datakeygen" class="btn btn-default dropdown-toggle" type="button" data-toggle="collapse" data-target="#data_keygen" aria-expanded="false" aria-controls="collapseExample">
+                                <span >Dane z wygenerowanego klucza</span>
+                            </button>
+                        </h3>
+                        </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools">
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+                            <a  (click)="goback()" title="powrót" href="javascript:;" class="m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dropdown__toggle">
+                                <i class="fa fa-arrow-left"></i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--begin::Form-->
+        
+        <div  class="m-form m-form--fit m-form--label-align-right collapse" id="data_keygen"  >
+
+            <div class="m-portlet__body" >
+                
+                <div class="row" >
+                     <div class="col-md-12 form-group m-form__group row align-items-center" >
+
+                        <div class="col-md-12 col-lg-6 col-xl-6">
+                            <div class="form-group m-form__group" >
+                                    Klucz : <span class="m--font-bolder">{{model.serial}}</span>
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-12 col-lg-6 col-xl-6">
+                            <div class="form-group m-form__group" >
+                                    Program : <span class="m--font-bolder">{{model.caption}}</span>
+                            </div>
+                        </div>
+
+                         <div class="col-md-12 col-lg-6 col-xl-6">
+                            <div class="form-group m-form__group" >
+                                    Cena zakupu : 
+                                    <span *ngIf="!model.trial" class="m--font-bolder">{{model.price | number:'2.2-2'}} PLN</span> 
+                                    <span *ngIf="model.trial" class="m--font-info"> Wersja testowa </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6 col-xl-6">
+                            <div class="form-group m-form__group" >
+                                    Liczba stanowisk : <span class="m--font-bolder">{{model.items}}</span>
+                            </div>
+                        </div>
+
+                       
+
+                        <div class="col-md-12 col-lg-6 col-xl-6">
+                            <div class="form-group m-form__group" >
+                                    Ważność : 
+                                     <span *ngIf="model.date_end" [ngClass]="{'m--font-danger':model.expi==2, 'm--font-warning':model.expi==1}">
+                                        <span class="m--font-bolder">{{model.date_end}} </span>
+                                    </span>
+                                    <span *ngIf="!model.date_end" >
+                                        od aktywacji 
+                                        <span class="m--font-bolder"> {{model.date_label}} </span> 
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6 col-xl-6">
+                            <div class="form-group m-form__group" >
+                                    Opłacono : 
+                                    <span *ngIf="!model.trial">
+                                        <span *ngIf="!model.prepaid" class="m-badge m-badge--wide m-badge--warning">Nie</span>
+                                        <span *ngIf="model.prepaid" class="m-badge m-badge--wide m-badge--success">Tak</span>
+                                    </span>
+                                    <span *ngIf="model.trial" class="m--font-info">Wersja testowa</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6 col-xl-6">
+                            <div class="form-group m-form__group">
+                                    Sprzedał : 
+                                    <span class="m--font-bolder">
+                                        <span *ngIf="model.is_reseller_name" >{{model.reseller_name}}</span>
+                                        <span *ngIf="!model.is_reseller_name" >{{model.admin_name}}</span>
+                                    </span>
+                            </div>
+                        </div>
+
+                         <div class="col-md-12 col-lg-6 col-xl-6">
+                            <div class="form-group m-form__group" >
+                                    Data aktywacji : 
+                                    <span *ngIf="!model.date_start" class="m--font-bolder"> brak </span>
+                                    <span *ngIf="model.date_start" class="m--font-bolder"> {{model.date_start}} </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6 col-xl-6" *ngIf="model.receipts>0">
+                            <div class="form-group m-form__group" >
+                                    Limit paragonów : 
+                                    <span class="m--font-bolder"> {{model.receipts}} </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <hr>
+                            <button class="btn btn-brand" (click)="getPrintKey()" ><i class="m-nav__link-icon flaticon-user-add"></i> Drukuj potwierdzenie</button>
+                            <button class="btn btn-brand" (click)="sendKey()"><i class="m-nav__link-icon flaticon-user-add"></i> Wyślij do klienta</button>
+                            <button *ngIf="!model.trial" class="btn btn-accent" (click)="showRenewForm()"><i class="m-nav__link-icon flaticon-user-add"></i> Przedłuż ważnośc klucza</button>
+                        </div>
+
+                    </div>
+                </div>
+                    
+            </div>
+        
+
+
+        </div>
+
+        <!--end::Form-->
+    </div>
+
+
+
+
+
+    <div class="m-portlet m-portlet--tab" *ngIf="!disable_form">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title" >
+                        <span class="m-portlet__head-icon ">
+                            <i class="flaticon flaticon-user"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            <button *ngIf="route_type==='add'"   class="btn btn-default dropdown-toggle" type="button" data-toggle="collapse" data-target="#collapse_client" aria-expanded="false" aria-controls="collapseExample">
+                                <span >Dane klienta</span>
+                            </button>
+                            <span *ngIf="route_type==='edit'" >Edycja danych klienta</span>
+                        </h3>
+                </div>
+            </div>
+            <div class="m-portlet__head-tools" *ngIf="route_type==='edit'">
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+                            <a  (click)="goback()" title="powrót" href="javascript:;" class="m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dropdown__toggle">
+                                <i class="fa fa-arrow-left"></i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--begin::Form-->
+        
+        <form #form_key_client="ngForm"  class="m-form m-form--fit m-form--label-align-right" [class.collapse]="route_type=='add'" id="collapse_client"  >
+
+            <div class="m-portlet__body" >
+                
+                <div class="row" >
+
+                    <div class="col-md-12 form-group m-form__group align-items-center" >
+
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group" [class.has-danger]="err.name">
+                                <label for="pname">
+                                    Nazwa firmy:
+                                </label>
+                                <input [(ngModel)]="model.client_name" name="pname" type="text" class="form-control m-input m-input--square" id="pname"  placeholder="Nazwa firmy">
+                                <div *ngIf="err.name" class="form-control-feedback">
+                                    {{err.name}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group" [class.has-danger]="err.nip">
+                                <label for="pnip">
+                                    NIP:
+                                </label>
+                                <input [(ngModel)]="model.client_nip" name="pnip" type="text" class="form-control m-input m-input--square" id="pnip"  placeholder="NIP">
+                                <div *ngIf="err.nip" class="form-control-feedback">
+                                    {{err.nip}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">&nbsp;</div>
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group" [class.has-danger]="err.city">
+                                <label for="pcity">
+                                    Miasto:
+                                </label>
+                                <input [(ngModel)]="model.client_city" name="pcity" type="text" class="form-control m-input m-input--square" id="pcity"  placeholder="Miasto">
+                                <div *ngIf="err.city" class="form-control-feedback">
+                                    {{err.city}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group" [class.has-danger]="err.postcode">
+                                <label for="ppostcode">
+                                    Kod pocztowy:
+                                </label>
+                                <input [(ngModel)]="model.client_postcode" name="ppostcode" type="text" class="form-control m-input m-input--square" id="ppostcode"  placeholder="Kod pocztowy">
+                                <div *ngIf="err.postcode" class="form-control-feedback">
+                                    {{err.postcode}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">&nbsp;</div>
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group" [class.has-danger]="err.street">
+                                <label for="pstreet">
+                                    Ulica:
+                                </label>
+                                <input [(ngModel)]="model.client_street" name="pstreet" type="text" class="form-control m-input m-input--square" id="pstreet"  placeholder="Ulica">
+                                <div *ngIf="err.street" class="form-control-feedback">
+                                    {{err.street}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group" [class.has-danger]="err.street_n">
+                                <label for="pstreet_n">
+                                    Numer lokalu:
+                                </label>
+                                <input [(ngModel)]="model.client_street_n1" name="pstreet_n" type="text" class="form-control m-input m-input--square" id="pstreet_n"  placeholder="Numer lokalu">
+                                <div *ngIf="err.street_n" class="form-control-feedback">
+                                    {{err.street_n}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">&nbsp;</div>
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group" [class.has-danger]="err.email">
+                                <label for="pemail">
+                                    Adres e-mail:
+                                </label>
+                                <input [(ngModel)]="model.client_email" name="pemail" type="text" class="form-control m-input m-input--square" id="pemail"  placeholder="Adres e-mail">
+                                <div *ngIf="err.email" class="form-control-feedback">
+                                    {{err.email}}
+                                </div>
+                            </div>
+                        </div>
+
+                         <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group" [class.has-danger]="err.phone">
+                                <label for="pphone">
+                                    Numer telefonu:
+                                </label>
+                                <input [(ngModel)]="model.client_phone"  name="pphone" type="text" class="form-control m-input m-input--square" id="pphone"  placeholder="Numer telefonu">
+                                <div *ngIf="err.phone" class="form-control-feedback">
+                                    {{err.phone}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">&nbsp;</div>
+
+                        <div class="col-md-12 col-lg-6">
+                            <div class="form-group m-form__group">
+                                <label for="pcountry">
+                                    Kraj:
+                                </label>
+                                <div class="btn-group bootstrap-select form-control m-bootstrap-select m_">
+                                    <button type="button" class="btn dropdown-toggle btn-default" data-toggle="dropdown" role="button" title="Polska" aria-expanded="false">
+                                        <span class="filter-option pull-left">
+                                            Polska
+                                        </span>&nbsp;<span class="bs-caret"><span class="caret"></span></span>
+                                    </button>
+                                    <div class="dropdown-menu open" role="combobox" x-placement="bottom-start">
+                                        <ul class="dropdown-menu inner" role="listbox" aria-expanded="false">
+                                            <li data-original-index="0" class="selected">
+                                                <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true">
+                                                    <span class="text">
+                                                    Polska
+                                                    </span><span class="glyphicon glyphicon-ok check-mark"></span>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                       
+
+                    </div>
+                </div>
+                    
+            </div>
+        
+            <div class="m-portlet__foot m-portlet__foot--fit" *ngIf="route_type==='edit'">
+                <div class="m-form__actions">
+                    <button class="btn btn-metal" (click)="action()" [ngClass]="{'m-loader m-loader--right m-loader--light': loading}" [disabled]="loading" >
+                        <span>Zapisz</span>
+                    </button>
+                </div>
+            </div>
+
+
+        </form>
+
+        <!--end::Form-->
+    </div>
+
+
+
+</div>
+</div>
+
+
+<div class="modal fade" id="modal_renew_key" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >
+                    Przedłuż klucz
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="cursor: pointer;">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+       
+                <div class="">
+                    Kwota kredytu kupieckiego <span style="font-weight: bold;"> {{credit_data.credit | number:'1.2-2'}} PLN</span>. Wykorzystano <span class="m--font-danger"> {{credit_data.price_sum | number:'1.2-2'}} PLN</span>. Poziom rabatowy <span style="font-weight: bold;"> {{credit_data.discount}} %</span>.
+                </div>
+
+
+                <form>
+                    <div class="col-md-12">&nbsp;</div>
+                    
+                    <div class="m-form__group ">
+                        <div class="m-form__label">
+                            <label>
+                                Okres licencji:
+                            </label>
+                        </div>
+                        <div class="m-form__control" *ngIf="days.length > 0">
+                            <div class="btn-group bootstrap-select form-control m-bootstrap-select ">
+                                <button type="button" class="btn dropdown-toggle bs-placeholder btn-default" data-toggle="dropdown" role="button" data-id="m_form_status"  aria-expanded="false">
+                                    <span class="filter-option pull-left">{{selectedDay.name}}</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span>
+                                </button>
+                                <div class="dropdown-menu open " role="combobox" x-placement="bottom-start" >
+                                    <ul class="dropdown-menu inner ul__1" role="listbox" aria-expanded="false" >
+                                        <li *ngFor="let d of days;" (click)="selectDay2(d)" data-original-index="0" [class.selected]="selectedDay.id===d.id">
+                                            <a tabindex="0" class="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true">
+                                                <span class="text">{{d.name}}</span>
+                                                <span class="glyphicon glyphicon-ok check-mark"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>    
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">&nbsp;</div>
+
+                        <div class="col-md-12" >
+                            <div class="m-form__group form-group" [ngClass]="{'has-danger':price_limit}">
+                                <label>
+                                    Cena: 
+                                    <span class="m-badge m-badge--brand m-badge--wide m-badge--rounded" [ngClass]="{'m-badge--danger':price_limit}" style="font-size: 1.2em;">
+                                         {{ calculated_price | number:'1.2-2' }}
+                                    </span>
+                                    PLN
+                                </label>
+                                <div *ngIf="price_limit" class="form-control-feedback">
+                                    Przekroczono kwotę za jaką można sprzedawać klucze.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Zamknij
+                </button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" [disabled]="price_limit" (click)="renewKey()">
+                    Przedłuż
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+

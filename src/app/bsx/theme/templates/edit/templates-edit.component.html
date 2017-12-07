@@ -1,0 +1,72 @@
+
+ <div *ngIf="error" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Błąd!</strong> Nastąpił błąd podczas komunikacji z serwerem. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+</div>
+
+<div class="m-content">
+	<!--begin::Portlet-->
+	<div class="m-portlet">
+		<div class="m-portlet__head">
+			<div class="m-portlet__head-caption">
+				<div class="m-portlet__head-title">
+					<h3 class="m-portlet__head-text">
+						<span class="m--font-bolder" >Edytuj 
+							<span *ngIf="!fetched"> Szablon </span>
+							<span *ngIf="fetched"> {{model.templ.type.name}} </span>
+						</span>
+					</h3>
+				</div>
+			</div>
+			<div class="m-portlet__head-tools">
+                <ul class="m-portlet__nav">
+                    <li class="m-portlet__nav-item">
+                        <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+                            <a  (click)="goback()" title="powrót" href="javascript:;" class="m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dropdown__toggle">
+                                <i class="fa fa-arrow-left"></i>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+		</div>
+		<!--begin::Form-->
+		<form class="m-form m-form--fit m-form--label-align-right">
+			<div class="m-portlet__body">
+				<div class="form-group m-form__group row">
+					<label class="col-form-label col-lg-2 col-sm-12">
+						Tytuł
+					</label>
+					<div class="col-lg-10 col-sm-12">
+						<input type="text" class="form-control" id="m_maxlength_1"  name="title" [(ngModel)]="model.templ.title"  >
+					</div>
+				</div>
+				
+				<div class="form-group m-form__group row">
+					<label class="col-form-label col-lg-2 col-sm-12">
+						Treść szablonu
+					</label>
+					<div class="col-lg-10 col-sm-12">
+						<textarea class="form-control" id="m_maxlength_5"   rows="15" name="body" [(ngModel)]="model.templ.body"></textarea>
+					</div>
+				</div>
+				
+			</div>
+			<div class="m-portlet__foot m-portlet__foot--fit">
+				<div class="m-form__actions m-form__actions">
+					<div class="row">
+						<div class="col-lg-10 ml-lg-auto">
+							<button class="btn btn-metal" (click)="action()" [ngClass]="{'m-loader m-loader--right m-loader--light': loading}" [disabled]="loading">
+			                   Zapisz
+			                </button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<!--end::Form-->
+	</div>
+	<!--end::Portlet-->
+	<!--begin::Modal-->
+	
+	<!--end::Modal-->
+</div>

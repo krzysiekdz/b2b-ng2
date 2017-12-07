@@ -1,0 +1,26 @@
+@keyframes anim_hide_smooth {
+	from { 
+		height:  48px;
+		font-size: 1em;
+		opacity: 1;
+	}
+	to {
+		height: 0px;
+		font-size: 0.5em;
+		padding: 0px;
+		opacity: 0;
+		margin: 0px;
+	}
+}
+
+.anim1 {
+	animation-name: anim_hide_smooth;
+	animation-delay: 3s;
+	animation-duration: 1s;
+}
+
+.ul__1 {
+	max-height: 230px; 
+	overflow-y: auto; 
+	min-height: 0px;
+}

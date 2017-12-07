@@ -1,0 +1,41 @@
+<!-- artykuł: 
+<input type="text" name="goto" [(ngModel)]="link" >
+<button (click)="goTo()">pobierz</button> -->
+
+
+<div class="m-grid__item m-grid__item--fluid m-wrapper" *ngIf="!error && !error404">
+	<div class="m-content">
+		<div class="row">
+			<div class="col-md-12">
+				<!--begin::Portlet-->
+				<div class="m-portlet m-portlet--mobile">
+					<div class="m-portlet__head">
+						<div class="m-portlet__head-caption">
+							<div class="m-portlet__head-title">
+								<h3 class="m-portlet__head-text">
+									<span class="m--font-bolder display-larger"> {{article.title}} </span>
+									<small *ngIf="article.author" >
+										 autor: {{article.author}}
+									</small>
+								</h3>
+							</div>
+						</div>
+					</div>
+					<div *ngIf="article.body" [innerHTML]="article.body" class="m-portlet__body">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div *ngIf="error" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Błąd!</strong>Nie można pobrać danych z serwera. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+</div>
+
+<div *ngIf="error404" class="m-alert m-alert--outline m-alert--outline-2x alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Ostrzeżenie!</strong>Artykuł o podanym adresie nie istnieje.
+</div>
+
+
