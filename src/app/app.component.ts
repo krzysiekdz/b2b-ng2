@@ -16,16 +16,16 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         Helpers.init();
-        var self=this;
+
         this._script.load('body', 'assets/core/vendors.bundle.js', 'assets/core/scripts.bundle.js');
 
         this._dataService.login('','',1)
-            .then(function(res) {
-                self.app_loading=false;
+            .then(res => {
+                this.app_loading=false;
                 if(res.err_code!==0) {
-                    self._router.navigate(['login']);
+                    this._router.navigate(['login']);
                 } 
             });
     }
+    
 }
-//m-brand--minimize m-aside-left--minimize

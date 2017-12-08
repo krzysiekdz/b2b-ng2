@@ -1,5 +1,9 @@
 <div *ngIf="error" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>Błąd!</strong> Nastąpił błąd podczas wczytywania listy użytkowników. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+    <strong>Błąd!</strong> Nastąpił błąd podczas komunikacji z serwerem. Spróbuj ponownie za chwilę, a jeśli błąd będzie się powtarzał, skontaktuj się z nami.
+</div>
+
+ <div *ngIf="no_branches" class="m-alert m-alert--outline m-alert--outline-2x alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Ostrzeżenie!</strong> Nie masz jeszcze żadnych pracowników. Aby móc ich dodawać, najpierw utwórz oddział.
 </div>
 
  <div *ngIf="err_delete" class="m-alert m-alert--outline m-alert--outline-2x alert alert-danger alert-dismissible fade show anim1" role="alert">
@@ -114,15 +118,42 @@ m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dro
 				<div class="form-group m-form__group row align-items-center">
 					
 					<div class="col-md-4">
-						<div class="m-input-icon m-input-icon--left">
-							<input type="text" name="search_query" [(ngModel)]="search_query" (input)="search()" class="form-control m-input " placeholder="Wyszukaj..." id="m_form_search">
-							<span class="m-input-icon__icon m-input-icon__icon--left">
-								<span>
-									<i class="la la-search"></i>
-								</span>
-							</span>
-						</div>
+                        <div class="form-group m-form__group">
+                            <div class="m-form__label">
+                                <label class="m-label m-label--single" >
+                                    Szukaj:
+                                </label>
+                            </div>
+    						<div class="m-input-icon m-input-icon--left">
+    							<input type="text" name="search_query" [(ngModel)]="search_query" (input)="search()" class="form-control m-input " placeholder="..." id="m_form_search">
+    							<span class="m-input-icon__icon m-input-icon__icon--left">
+    								<span>
+    									<i class="la la-search"></i>
+    								</span>
+    							</span>
+    						</div>
+                        </div>
+                        <div class="d-md-none m--margin-bottom-10"></div>
 					</div>
+
+
+                    <div class="col-md-4" *ngIf="admin">
+                        <div class="form-group m-form__group">
+                            <div class="m-form__label">
+                                <label class="m-label m-label--single" >
+                                    Oddział:
+                                </label>
+                            </div>
+                            <select  class="form-control m-select2" id="m_select2_2"  name="select_branch" [(ngModel)]="selectedBranch">
+                                <option *ngFor="let b of branches;" [ngValue]="b" >
+                                    {{b.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="d-md-none m--margin-bottom-10"></div>
+                    </div>
+
+
 
 				</div>
 			</div>

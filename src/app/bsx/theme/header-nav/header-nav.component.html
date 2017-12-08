@@ -38,25 +38,25 @@
 			<!-- END: Brand -->
 			<div class="m-stack__item m-stack__item--fluid m-header-head" id="m_header_nav">
 				<!-- BEGIN: Horizontal Menu -->
-				<div id="m_header_menu" class="m-header-menu m-aside-header-menu-mobile m-aside-header-menu-mobile--offcanvas  m-header-menu--skin-light m-header-menu--submenu-skin-light m-aside-header-menu-mobile--skin-dark m-aside-header-menu-mobile--submenu-skin-dark"  >
+				<div id="m_header_menu" class="m-header-menu m-aside-header-menu-mobile m-aside-header-menu-mobile--offcanvas  m-header-menu--skin-light m-header-menu--submenu-skin-light m-aside-header-menu-mobile--skin-dark m-aside-header-menu-mobile--submenu-skin-dark menu_top_hidden_md"  >
 
 					<ul class="m-menu__nav  m-menu__nav--submenu-arrow">
 
-						<li class="m-menu__item  m-menu__item--submenu m-menu__item--rel" routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"   data-menu-submenu-toggle="click" aria-haspopup="true">
-							<a  href="javascript:;" class="m-menu__link m-menu__toggle">
+						<li id="menu_item_left" class="m-menu__item  m-menu__item--submenu m-menu__item--rel" routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"   data-menu-submenu-toggle="click" aria-haspopup="true" >
+							<!-- <a  href="#" class="m-menu__link m-menu__toggle" style="background-color: transparent;">
 								<i class="m-menu__link-icon flaticon-menu-button"></i>
 								<span class="m-menu__link-text">
 									Menu
 								</span>
 								<i class="m-menu__hor-arrow la la-angle-down"></i>
 								<i class="m-menu__ver-arrow la la-angle-right"></i>
-							</a>
+							</a> -->
 							<div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left" id="menu_left">
 								<span class="m-menu__arrow m-menu__arrow--adjust"></span>
 								<ul class="m-menu__subnav">
 
 									<li class="m-menu__item" routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"   aria-haspopup="true">
-										<a  routerLink="//index/user" class="m-menu__link">
+										<a  routerLink="//index/user" class="m-menu__link" >
 											<i class="m-menu__link-icon flaticon-user"></i>
 											<span class="m-menu__link-text">
 												Mój profil
@@ -65,7 +65,7 @@
 									</li>
 
 									<li *ngIf="admin_br" class="m-menu__item" routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"   aria-haspopup="true">
-										<a  routerLink="{{users_link}}" class="m-menu__link">
+										<a  routerLink="{{users_link}}" class="m-menu__link" >
 											<i class="m-menu__link-icon flaticon-users"></i>
 											<span class="m-menu__link-text">
 												Pracownicy
@@ -74,8 +74,8 @@
 									</li>
 
 
-									<li *ngIf="admin" class="m-menu__item m-menu__item--submenu m-menu__item--hover" data-menu-submenu-toggle="hover" aria-haspopup="true">
-										<a href="#" class="m-menu__link m-menu__toggle">
+									<li *ngIf="admin" class="m-menu__item m-menu__item--submenu m-menu__item--hover" data-menu-submenu-toggle="hover" aria-haspopup="true" id="menu_item_branch">
+										<a href="#" class="m-menu__link m-menu__toggle" style="background-color: transparent;">
 											<i class="m-menu__link-icon flaticon-technology"></i>
 											<span class="m-menu__link-text">
 												Firma
@@ -83,18 +83,18 @@
 											<i class="m-menu__hor-arrow la la-angle-right"></i>
 											<i class="m-menu__ver-arrow la la-angle-right"></i>
 										</a>
-										<div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--right">
+										<div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--right" id="submenu_branch" id="menu_branch">
 											<span class="m-menu__arrow "></span>
 											<ul class="m-menu__subnav">
-												<li class="m-menu__item " data-redirect="true" aria-haspopup="true">
-													<a routerLink="{{branches_link}}" class="m-menu__link ">
+												<li class="m-menu__item " data-redirect="true" aria-haspopup="true" id="submenu_item_branches">
+													<a routerLink="{{branches_link}}" class="m-menu__link " >
 														<span class="m-menu__link-text">
 															Oddziały
 														</span>
 													</a>
 												</li>
-												<li class="m-menu__item " data-redirect="true" aria-haspopup="true">
-													<a routerLink="{{users_link}}" class="m-menu__link ">
+												<li class="m-menu__item " data-redirect="true" aria-haspopup="true" id="submenu_item_users">
+													<a routerLink="{{users_link}}" class="m-menu__link "  >
 														<span class="m-menu__link-text">
 															Pracownicy
 														</span>
@@ -106,7 +106,7 @@
 									</li>
 
 									<li class="m-menu__item" routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"   aria-haspopup="true">
-										<a  routerLink="{{keys_link}}" class="m-menu__link">
+										<a  routerLink="{{keys_link}}" class="m-menu__link" >
 											<i class="m-menu__link-icon la la-key"></i>
 											<span class="m-menu__link-text">
 												Klucze
@@ -115,7 +115,7 @@
 									</li>
 
 									<li *ngIf="admin" class="m-menu__item" routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"   aria-haspopup="true">
-										<a  routerLink="//index/templates/list" class="m-menu__link">
+										<a  routerLink="//index/templates/list" class="m-menu__link" >
 											<i class="m-menu__link-icon flaticon-interface-6"></i>
 											<span class="m-menu__link-text">
 												Szablony
@@ -124,7 +124,7 @@
 									</li>
 
 									<li class="m-menu__item" routerLinkActive="m-menu__item--active" routerLinkActiveOptions="{ exact: true }"   aria-haspopup="true">
-										<a  routerLink="//b2b-baza-wiedzy" class="m-menu__link">
+										<a  routerLink="//b2b-baza-wiedzy" class="m-menu__link" >
 											<i class="m-menu__link-icon socicon-buffer"></i>
 											<span class="m-menu__link-text">
 												Baza wiedzy
@@ -207,7 +207,8 @@
 													</li>
 													<li class="m-nav__item">
 														<a routerLink="user" class="m-nav__link">
-															<i class="m-nav__link-icon flaticon-profile-1"></i>
+															<!-- <i class="m-nav__link-icon flaticon-profile-1"></i> -->
+															<i class="m-nav__link-icon flaticon-user"></i>
 															<span class="m-nav__link-title">
 																<span class="m-nav__link-wrap">
 																	<span class="m-nav__link-text">

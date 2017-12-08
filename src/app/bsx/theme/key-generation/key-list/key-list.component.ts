@@ -64,6 +64,7 @@ export class KeyListComponent {
 	}
 
 	ngOnInit() {
+		console.log('init keys list');
 		this.initAsync();
 		if(this._settings._get('key_add_success')) {
 			this._settings._unset('key_add_success');
@@ -84,7 +85,7 @@ export class KeyListComponent {
 				if(res.is_ok) {
 					self.programs=self._dataService.getProgramsModel();
 					self.programs.unshift(self.programAll);
-					if(self.programs.length<1) self.error=true; //jesli nie ma programów, nie mozna wyswietlac listy
+					if(self.programs.length==1) self.error=true; //jesli nie ma programów, nie mozna wyswietlac listy
 					else self.selectedProgram=self.programAll;
 				} 
 		})
@@ -130,6 +131,7 @@ export class KeyListComponent {
 
 	refresh() {
 		Helpers.show_loading(true);
+		this.error=false;
 		this.getCreditData();
 		this.getKeys();
 	}

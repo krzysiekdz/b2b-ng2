@@ -27,8 +27,7 @@ import { KeyAddEditComponent } from './bsx/theme/key-generation/key-add-edit/key
 import { ArticleComponent } from './bsx/theme/article/article.component';
 import { TemplatesListComponent } from './bsx/theme/templates/list/templates-list.component';
 import { TemplatesEditComponent } from './bsx/theme/templates/edit/templates-edit.component';
-import { ArticleAllComponent } from './bsx/theme/article-all/article-all.component';
-import { ThemeAllComponent } from './bsx/theme/theme-all/theme-all.component';
+import { EmptyComponent } from './bsx/theme/empty/empty.component';
 
 import { AuthService } from './bsx/services/auth.service';
 import { UserService } from './bsx/services/user.service';
@@ -62,8 +61,7 @@ import { DataService } from "./bsx/services/data.service";
         ArticleComponent,
         TemplatesListComponent,
         TemplatesEditComponent,
-        ArticleAllComponent,
-        ThemeAllComponent
+        EmptyComponent
     ],
     imports: [
         BrowserModule,

@@ -1,16 +1,32 @@
-<header-nav></header-nav>
-<div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body " >
+<header-nav *ngIf="route_type==0"></header-nav>
+<div class="m-grid__item m-grid__item--fluid m-grid m-grid--ver-desktop m-grid--desktop m-body " *ngIf="route_type==0">
 
 	<aside-nav id="m_aside_left" class="m-grid__item m-aside-left m-aside-left--fixed  m-aside-left--skin-dark"  ></aside-nav>
 
 	<div class="m-grid__item m-grid__item--fluid m-wrapper" >
 		<div class="m-content">
-			<router-outlet *ngIf="index"></router-outlet>
-			<article-all-component *ngIf="!index" ></article-all-component>
+			<router-outlet ></router-outlet>
 		</div>
 	</div>
 </div>
-<footer-1></footer-1>
+<footer-1 *ngIf="route_type==0"></footer-1>
+
+
+<div *ngIf="route_type==1"  class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--singin m-login--2 m-login-2--skin-2 login-b2b" id="m_login" style="background-image: url(./assets/app/media/img//bg/bg-3.jpg);">
+</div>
+
+
+<div *ngIf="route_type==-1" class="m-page-loader m-page-loader--non-block" style="margin-left: -80px; margin-top: -20px;">
+	<div class="m-blockui">
+		<span>
+			Inicjalizacja aplikacji...
+		</span>
+		<span>
+			<div class="m-loader m-loader--brand"></div>
+		</span>
+	</div>
+</div>
+
 
 
 	

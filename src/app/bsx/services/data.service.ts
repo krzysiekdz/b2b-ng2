@@ -43,6 +43,7 @@ var model = {
 
 	users:[],
 	branches:[],
+	$branches:[],
 	keys:[],
 	programs:[],
 	article:{},
@@ -55,7 +56,9 @@ var model = {
 	branch:{},
 	key:{},
 	credit:{fetched:false,},
-	inited:false,
+
+	model_inited:false,
+	app_state:0, //0-niezainicjalizowana, 1-w trakcie inicjalizacji, 2-zainicjalizowana
 };
 
 
@@ -63,8 +66,8 @@ var model = {
 export class DataService {
 	
 	constructor(private _router: Router) {
-		if(!model.inited) {
-			model.inited=true;
+		if(!model.model_inited) {
+			model.model_inited=true;
 			if(typeof (Storage) !== 'undefined') {
 				if(Helpers.getV('remember','')) model.auth=localStorage['b2b_auth'];
 				else model.auth=sessionStorage['b2b_auth'];
@@ -92,6 +95,15 @@ export class DataService {
 		u.street_n1=row.pstreet_n1;
 		u.country=row.pcountry;
 		u.phone=row.pphone1;
+
+		u.branch_city=row.branch_city;
+		u.branch_postcode=row.branch_postcode;
+		u.branch_street=row.branch_street;
+		u.branch_street_n1=row.branch_street_n1;
+
+		u.admin=this.test('admin', u);
+		u.admin_br=this.test('admin_br', u);
+		u.user_=this.test('user', u);
 		return u;
 	}
 
@@ -294,6 +306,13 @@ export class DataService {
 		}
 	}
 
+	set$Branches(rows) {
+		model.$branches=[{name:'Wszystkie', id:-1}];
+		for(var i=0; i<rows.length; i++) {
+			model.$branches.push(this.filterBranch(rows[i]));
+		}
+	}
+
 	setKey(row) {
 		model.key=this.filterKey(row);
 	}	
@@ -306,11 +325,10 @@ export class DataService {
 	}
 
 	setPrograms(rows) {
-		model.programs=[];
+		model.programs=[{name:'Wszystkie', id:-1}];
 		for(var i=0; i<rows.length; i++) {
 			model.programs.push(this.filterProgram(rows[i]));
 		}
-		// console.log(model.programs);
 	}
 
 	setUser(row) {
@@ -359,6 +377,21 @@ export class DataService {
 			delete sessionStorage['b2b_auth'];
 			delete localStorage['b2b_auth'];
 		}
+	}
+
+	clear() {
+		this.clearCurrentUser();
+		this.clearAuth();
+		Helpers.unsetV('remember','');
+		model.app_state=0;
+	}
+
+	setAppState(state:number) {
+		model.app_state=state;
+	}
+
+	getAppState() {
+		return model.app_state;
 	}
 
 	//=======================
@@ -466,23 +499,20 @@ export class DataService {
 
 	logout(): Promise<any> {
 		let self=this;
-		model.current_user.islogged=false;
-		Helpers.unsetV('remember','')
+		var a=model.auth;
+		this.clear(); //niezaleznie od reakcji serwera, od razu wylooguje uzytkownika z aplikacji klienta
 		return new Promise(function(resolve, reject)  {
 			$.post(logout_url, 
-				{auth: model.auth} 
+				{auth: a} 
 			)
 			.done(function(res) {
 				res=JSON.parse(res);
         		res.err_code=parseInt(res.err_code);
+        		console.log(res);
 				resolve(res);
 			})
 			.fail(function(err) {
 				resolve(err);
-			})
-			.always(function(){
-				self.clearCurrentUser();//niezaleznie od odpowiedzi serwera wylogowuje uzytkownika z aplikacji
-				self.clearAuth();
 			})
 			;
 		});
@@ -674,7 +704,7 @@ export class DataService {
 		});
 	}
 
-	getBranches(start, count, search='',orderby='',orderbydesc=1):Promise<any> {
+	getBranches(start, count, search='',orderby='',orderbydesc=1, set$branches=false):Promise<any> {
 		var self=this;
 		return new Promise(function(resolve, reject) {
 			$.post(get_branches_url, {
@@ -683,8 +713,12 @@ export class DataService {
 			.done(function(res) {
 				res=self.analyseResponse(res);
 				if(res.is_ok) { //pobrano pomyslnie
-					self.setBranches(res.rows);
-					self.setPagination(res.res);
+					if(!set$branches) {
+						self.setBranches(res.rows);
+						self.setPagination(res.res);
+					} else {
+						self.set$Branches(res.rows);
+					}
 				}
 				resolve(res);
 			})
@@ -963,6 +997,7 @@ export class DataService {
         res.err_code=parseInt(res.err_code);
         res.is_ok=false; 
 
+        console.log(res);
         if(res.err_code===0) {
         	res.is_ok=true;
         }

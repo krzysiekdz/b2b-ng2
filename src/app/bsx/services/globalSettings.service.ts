@@ -5,8 +5,8 @@ var model = {
 }
 
 var statics = {
-	users_link:'//index/company_users/list/1/100/!/id/1',
-	branches_link:'//index/company_br/list/1/10/!/c.id/1',
+	branches_link:'//index/company_br/list/1/100/!/id/1',
+	users_link:'//index/company_users/list/1/10/!/!/c.id/1',
 	keys_link:'//index/keygen/list/1/10/!/!/id/1',
 };
 

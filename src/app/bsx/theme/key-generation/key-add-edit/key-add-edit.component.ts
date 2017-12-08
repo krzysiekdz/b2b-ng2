@@ -38,7 +38,7 @@ export class KeyAddEditComponent  {
 	price:number=0;
 	price_limit:boolean=false;
 
-	link_first:string='//index/keygen/list/1/10/!/!/id/1';
+	link_first_page:string='';
 
 	client_email:string='';
 	base_price:number=0;
@@ -48,6 +48,7 @@ export class KeyAddEditComponent  {
 	constructor(private _dataService: DataService, private _router: Router, private _script: ScriptLoaderService, private _location: Location,
 		private _formService: FormService, private _settings: GlobalSettingsService, private _route: ActivatedRoute) {
 		this.user=this._dataService.getCurrentUserModel();
+		this.link_first_page=this._settings.getStatic('keys_link');
 	}
 
 	ngOnInit() {
@@ -275,7 +276,7 @@ export class KeyAddEditComponent  {
 	}
 
 	navigateFirst() {
-		this._router.navigate([this.link_first]);
+		this._router.navigate([this.link_first_page]);
 	}
 
 	comingSoon() {

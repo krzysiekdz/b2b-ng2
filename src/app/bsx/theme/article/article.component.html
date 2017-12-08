@@ -2,7 +2,6 @@
 <input type="text" name="goto" [(ngModel)]="link" >
 <button (click)="goTo()">pobierz</button> -->
 
-
 <div class="m-grid__item m-grid__item--fluid m-wrapper" *ngIf="!error && !error404">
 	<div class="m-content">
 		<div class="row">
@@ -20,8 +19,20 @@
 								</h3>
 							</div>
 						</div>
+						<div class="m-portlet__head-tools">
+			                <ul class="m-portlet__nav">
+			                    <li class="m-portlet__nav-item">
+			                        <div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
+			                             <a  (click)="goback()" title="powrót" href="javascript:;" class="m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dropdown__toggle">
+			                                <i class="fa fa-arrow-left"></i>
+			                            </a>
+			                           
+			                        </div>
+			                    </li>
+			                </ul>
+			            </div>
 					</div>
-					<div *ngIf="article.body" [innerHTML]="article.body" class="m-portlet__body">
+					<div  id="article_body" *ngIf="article.body" [innerHTML]="article.body" class="m-portlet__body">
 					</div>
 				</div>
 			</div>
@@ -38,4 +49,12 @@
     <strong>Ostrzeżenie!</strong>Artykuł o podanym adresie nie istnieje.
 </div>
 
+
+<ul class="m-nav-sticky" style="margin-top: 30px;">
+	<li class="m-nav-sticky__item"  title="powrót" data-placement="left" data-original-title="Purchase">
+		<a  (click)="goback()" title="powrót" href="javascript:;" class="m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dropdown__toggle">
+            <i class="fa fa-arrow-left"></i>
+        </a>
+	</li>
+</ul>
 

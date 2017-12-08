@@ -26,7 +26,8 @@
             <div class="m-portlet__head-caption">
                 <div class="m-portlet__head-title" >
                         <span class="m-portlet__head-icon ">
-                            <i class="flaticon flaticon-user-add"></i>
+                            <i *ngIf="route_type==='add'" class="flaticon flaticon-user-add"></i>
+                            <i *ngIf="route_type==='edit'" class="flaticon flaticon-edit-1"></i>
                         </span>
                         <h3 class="m-portlet__head-text">
                             <span *ngIf="route_type==='add'" >Dodawanie nowego pracownika</span>
@@ -276,6 +277,7 @@
                             <div class="form-group m-form__group" >
                                 <label >
                                     Oddział : <span class="m--font-bolder">{{user.branch_name}}</span>
+                                    {{user.branch_postcode}} {{user.branch_city}}<span *ngIf="user.branch_street">, {{user.branch_street}} {{user.branch_street_n1}}</span>
                                 </label>
                             </div>
                         </div>

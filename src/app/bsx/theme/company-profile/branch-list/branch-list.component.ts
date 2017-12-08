@@ -81,6 +81,7 @@ export class BranchListComponent {
 
 	refresh() {
 		Helpers.show_loading(true);
+		this.error=false;
 		this.getBranches();
 	}
 
@@ -132,7 +133,8 @@ export class BranchListComponent {
 
 		for(var i=0; i<this.branches.length; i++) {
 			var b=this.branches[i];
-			b.fillstyle='m--bg-fill-'+styles[i%len];
+			// b.fillstyle='m--bg-fill-'+styles[i%len];
+			b.fillstyle='m--bg-fill-primary';
 			b.firstLetter=b.name[0];
 		}
 	}
@@ -184,6 +186,11 @@ export class BranchListComponent {
 	}
 
 	goToEdit(id) {
-		this._router.navigate(['/index/company_br/edit/', id]);
+		this._router.navigate(['//index/company_br/edit/', id]);
+	}
+
+	gotoGroup(id) {
+		// console.log(id);
+		this._router.navigate(['//index/company_users/list/1/10/!/idbranch:'+id+'/id/1']);	
 	}
 }

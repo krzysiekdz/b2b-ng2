@@ -8,7 +8,8 @@ import { Helpers } from "../../helpers";
 // import { Login } from './login';
 
 @Component({
-	selector: '.m-grid.m-grid--hor.m-grid--root.m-pag',
+	// selector: '.m-grid.m-grid--hor.m-grid--root.m-pag',
+    selector: '.login-b2b',
 	templateUrl: './auth.component.html',
 	styleUrls: ['./auth.component.css'],
 })
@@ -28,7 +29,7 @@ export class AuthComponent {
         //     .then(() => {
         //         Login.init();
         //     });
-        if(this.user.islogged) this._router.navigate(['index/user']);
+        if(this.user.islogged) this._router.navigate(['//index/user']);
     }
 
     signin() {

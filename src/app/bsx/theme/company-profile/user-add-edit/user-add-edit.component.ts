@@ -27,7 +27,7 @@ export class UserAddEditComponent {
 	disable_form:boolean=false;
 	msg_edit:boolean=false;
 
-	link_first:string='//index/company_users/list/1/10/!/c.id/1';
+	link_first_page:string='';
 
 	tasks:number=0;
 	get_user:boolean=false;
@@ -41,6 +41,7 @@ export class UserAddEditComponent {
 		this.user=this._dataService.getCurrentUserModel();
 		this.admin=this._dataService.test('admin')
 		this.admin_br=this._dataService.test('admin_br');
+		this.link_first_page=this._settings.getStatic('users_link');
 	}
 
 	ngOnInit() {
@@ -151,6 +152,10 @@ export class UserAddEditComponent {
 		var branch={id:u.branch,name:u.branch_name};
 		this.model.branch=branch;
 		this.branches=[branch];
+		this.user.branch_city=u.branch_city;
+		this.user.branch_postcode=u.branch_postcode;
+		this.user.branch_street=u.branch_street;
+		this.user.branch_street_n1=u.branch_street_n1;
 		if(this.admin && this.route_type=='user') {//admin chce zmodyfikowac swoje dane
 			this.model.city=u.city;
 			this.model.postcode=u.postcode;
@@ -163,7 +168,7 @@ export class UserAddEditComponent {
 	}
 
 	navigateFirst() {
-		this._router.navigate([this.link_first]);
+		this._router.navigate([this.link_first_page]);
 	}
 
 	goback() {

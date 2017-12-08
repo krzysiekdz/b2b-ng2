@@ -212,7 +212,7 @@
                                 PLN
                             </label>
                             <div *ngIf="price_limit" class="form-control-feedback">
-                                Przekroczono kwote za jaką można sprzedawać klucze.
+                                Przekroczono kwotę za jaką można sprzedawać klucze.
                             </div>
                         </div>
                     </div>
@@ -363,16 +363,38 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12">
-                            <hr>
-                            <button class="btn btn-brand" (click)="getPrintKey()" ><i class="m-nav__link-icon flaticon-user-add"></i> Drukuj potwierdzenie</button>
-                            <button class="btn btn-brand" (click)="sendKey()"><i class="m-nav__link-icon flaticon-user-add"></i> Wyślij do klienta</button>
-                            <button *ngIf="!model.trial" class="btn btn-accent" (click)="showRenewForm()"><i class="m-nav__link-icon flaticon-user-add"></i> Przedłuż ważnośc klucza</button>
-                        </div>
-
                     </div>
                 </div>
                     
+            </div>
+
+             <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    
+                        <div class="d-none d-md-block ">
+                            <button class="btn btn-brand" (click)="getPrintKey()" ><i class="m-nav__link-icon fa fa-print"></i> Drukuj potwierdzenie</button>
+                            <button class="btn btn-brand" (click)="sendKey()"><i class="m-nav__link-icon flaticon-paper-plane"></i> Wyślij do klienta</button>
+                            <button *ngIf="!model.trial" class="btn btn-accent" (click)="showRenewForm()"><i class="m-nav__link-icon la la-key"></i> Przedłuż ważnośc klucza</button>
+                        </div>
+                        <div class="d-md-none" >
+                            <div class="row justify-content-sm-center">
+                                <div class="col-2" style="padding: 5px;">
+                                    <button class="btn btn-brand " style="width: 200px;" (click)="getPrintKey()" ><i class="m-nav__link-icon fa fa-print"></i> Drukuj potwierdzenie</button>
+                                </div>
+                            </div>
+                             <div class="row justify-content-sm-center">
+                                <div class="col-2" style="padding: 5px;">
+                                    <button class="btn btn-brand " style="width: 200px;" (click)="sendKey()"><i class="m-nav__link-icon flaticon-paper-plane"></i> Wyślij do klienta</button>
+                                </div>
+                            </div>
+                             <div class="row justify-content-sm-center">
+                                <div class="col-2" style="padding: 5px;">
+                                    <button *ngIf="!model.trial" style="width: 200px;" class="btn btn-accent " (click)="showRenewForm()"><i class="m-nav__link-icon la la-key"></i> Przedłuż ważnośc klucza</button>
+                                </div>
+                            </div>
+                        </div>
+                    
+                </div>
             </div>
         
 

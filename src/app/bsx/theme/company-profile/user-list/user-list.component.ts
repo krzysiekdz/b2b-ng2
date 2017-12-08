@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute,  Router } from '@angular/router';
 import { DataService } from '../../../services/data.service';
-import * as $ from 'jquery';
+// import * as $ from 'jquery';
 import { Helpers } from '../../../../helpers';
 import { ScriptLoaderService } from '../../../services/script-loader.service';
 import { GlobalSettingsService } from '../../../services/globalSettings.service';
@@ -11,6 +11,7 @@ import { GlobalSettingsService } from '../../../services/globalSettings.service'
 var show_msg_time=3800; //czas pokazywania komunikatu o sukcesie
 var search_keypress_time=500; //max czas pomiedzy wcisnieciami klawiszy przy wyszukiwaniu
 declare let mApp: any;//uchwyt do metronica
+declare var $:any;
 
 @Component({
 	selector: 'user-list',
@@ -54,6 +55,13 @@ export class UserListComponent {
 	getparams:boolean=true;
 	mouseOnElement:any=null;
 
+	branches:any[]=[];
+	branchAll:any={name:'Wszystkie', id:-1};
+	no_branches:boolean=false;
+	selectedBranch:any=this.branchAll;
+	filters:string='';
+	filterNames:any=['idbranch'];
+
 	constructor(private _dataService: DataService, private _script: ScriptLoaderService, private _settings: GlobalSettingsService,
 		private _route: ActivatedRoute, private _router: Router) {
 		this.user=this._dataService.getCurrentUserModel();
@@ -68,6 +76,7 @@ export class UserListComponent {
 		}  else if(! (this.admin || this.admin_br) ) {
 			this._router.navigate(['']);
 		} else {
+			if (this.admin) this.getBranches();
 			if(this._settings._get('user_add_success')) {
 				this._settings._unset('user_add_success');
 				this.msg_add=true;
@@ -87,12 +96,26 @@ export class UserListComponent {
 		}
 	}
 
+	ngAfterViewInit() {
+		var self=this;
+		(<any>$('#m_select2_2')).select2();
+		$('#m_select2_2').change(function(e:any) {
+			var id=parseInt($('#m_select2_2').val());
+			self.selectedBranch=self.branches[id];
+			self.onFilterChange();
+		});
+	}
+
 	initFromUrl(params) {
 		this.start_fetch=Helpers.getInt(params, 'start', 1);
 		this.count_fetch=Helpers.getInt(params, 'count', this.page_sizes[0], this.page_sizes.slice(-1)[0]);
 		if(!this.page_sizes.includes(this.count_fetch)) this.count_fetch=this.page_sizes[0];//jesli wybrany rozmiar strony nie jest dokladnym rozmiarem z tablicy, wybieramy rozmiar najmniejszy
 
 		this.search_query=Helpers.getString(params, 'search');
+
+		var f:any=Helpers.parseParams(Helpers.getString(params, 'filters'), this.filterNames);
+		this.setBranch(f.idbranch);
+		this.setFilterString();
 
 		this.orderby=Helpers.getString(params, 'orderby');
 		if(!this.orderbycolumns.includes(this.orderby)) this.orderby='c.id';
@@ -102,6 +125,7 @@ export class UserListComponent {
 
 	refresh() {
 		Helpers.show_loading(true);
+		this.error=false;
 		if(this.admin) this.getUsersByParent();
 		else if (this.admin_br) this.getUsersByBranch();
 	}
@@ -125,21 +149,56 @@ export class UserListComponent {
 		
 	}
 
-	getUsersByParent() {
+	getUsersByParent() {//admin wyswietla uzytkownikow ta funkcja
 		var self=this;
-		this._dataService.getUsers(this.start_fetch , this.count_fetch, this.search_query, this.orderby, this.orderbydesc)
+		if(this.selectedBranch.id <= 0) {
+			this._dataService.getUsers(this.start_fetch , this.count_fetch, this.search_query, this.orderby, this.orderbydesc)
+				.then(function(res) {
+					if(res.is_ok) {
+						self.processData();
+					} else {
+						self.error=true;
+					}
+					Helpers.show_loading(false);
+				})
+				.catch(function(err) {
+					Helpers.show_loading(false);
+					self.error=true;
+				})
+			;
+		} else {
+			this._dataService.getUsersByBranch(this.selectedBranch.id, this.start_fetch, this.count_fetch, this.search_query, this.orderby, this.orderbydesc)
+				.then(function(res) {
+					if(res.is_ok) {
+						self.processData();
+					} else {
+						self.error=true;
+					}
+					Helpers.show_loading(false);
+				})
+				.catch(function(err) {
+					Helpers.show_loading(false);
+					self.error=true;
+				})
+			;
+		}
+	}
+
+	getBranches() {
+		var self=this;
+		this._dataService.getBranches(1, 100,'','id',1)
 			.then(function(res) {
 				if(res.is_ok) {
-					self.processData();
-				} else {
-					self.error=true;
+					self.branches=self._dataService.getBranchesModel();
+					self.branches.unshift(self.branchAll);
+					if(self.branches.length==1) self.no_branches=true; //jesli nie ma oddziałów, nie mozna wyswietlac listy
+					else self.selectedBranch=self.branchAll;
 				}
-				Helpers.show_loading(false);
+				else self.error=true;
 			})
 			.catch(function(err) {
-				Helpers.show_loading(false);
 				self.error=true;
-			})
+			});
 		;
 	}
 
@@ -164,6 +223,7 @@ export class UserListComponent {
 		this._router.navigate(['/index/company_users/list', 
 			this.start_fetch, this.count_fetch, 
 			(this.search_query==='')? '!':this.search_query, 
+			(this.filters==='')? '!':this.filters, 
 			this.orderby, this.orderbydesc]);
 	}
 
@@ -172,7 +232,28 @@ export class UserListComponent {
 		this._router.navigate(['/index/company_users/list', 
 			this.start_fetch, this.count_fetch, 
 			(this.search_query==='')? '!':this.search_query, 
+			(this.filters==='')? '!':this.filters, 
 			this.orderby, this.orderbydesc]);;
+	}
+
+	setBranch(id) {
+		if(!id) this.selectedBranch=this.branchAll;
+		else {
+			let b=this.branches.find(b=>b.id==id);
+			if(b) this.selectedBranch=b;
+			else this.selectedBranch=this.branchAll;
+		}
+	}
+
+	setFilterString() {
+		this.filters = (this.selectedBranch.id <= 0)? '':'idbranch:'+this.selectedBranch.id;
+		this.filters.trim();
+	}
+
+	onFilterChange() {
+		this.setFilterString();
+		this.start_fetch=1;
+		this.navigate();
 	}
 
 	setOrderBy(orderby) {

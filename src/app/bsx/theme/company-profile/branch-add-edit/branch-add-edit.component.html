@@ -21,7 +21,8 @@
             <div class="m-portlet__head-caption">
                 <div class="m-portlet__head-title" >
                         <span class="m-portlet__head-icon ">
-                            <i class="flaticon flaticon-add"></i>
+                            <i *ngIf="route_type==='add'" class="flaticon flaticon-add"></i>
+                            <i *ngIf="route_type==='edit'" class="flaticon flaticon-edit-1"></i>
                         </span>
                         <h3 class="m-portlet__head-text">
                             <span *ngIf="route_type==='add'" >Dodawanie nowego oddziału</span>

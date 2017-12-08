@@ -30,7 +30,7 @@
 		<ul class="m-portlet__nav">
 			<li class="m-portlet__nav-item">
 				<div class="m-dropdown m-dropdown--inline m-dropdown--arrow m-dropdown--align-right m-dropdown--align-push" data-dropdown-toggle="hover" aria-expanded="true">
-					<a routerLink="../list" class="
+					<a href="javascript:;" class="
 m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dropdown__toggle">
 						<i class="la la-plus m--hide"></i>
 						<i class="la la-ellipsis-h m--font-brand"></i>
@@ -47,7 +47,7 @@ m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dro
 											</span>
 										</li>
 										<li class="m-nav__item">
-											<a routerLink="../list" class="m-nav__link" (click)="refresh()">
+											<a href="javascript:;" class="m-nav__link" (click)="refresh()">
 												<i class="m-nav__link-icon flaticon-refresh"></i>
 												<span class="m-nav__link-text">
 													Odswież listę
@@ -55,7 +55,7 @@ m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dro
 											</a>
 										</li>
 										<li class="m-nav__item">
-											<a routerLink="../add" class="m-nav__link">
+											<a routerLink="//index/company_br/add" class="m-nav__link">
 												<i class="m-nav__link-icon flaticon-add"></i>
 												<span class="m-nav__link-text">
 													Dodaj oddział
@@ -134,7 +134,7 @@ m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dro
                 <td data-field="f1" class="m-datatable__cell w1_hide clickable" (click)="goToEdit(b.id)" title="Edytuj">
                     <div class="w1" >
                         <div class="m-card-user m-card-user--sm">								
-                            <div class="m-card-user__pic">									
+                            <div class="m-card-user__pic w1-photo">									
                                 <div class="m-card-user__no-photo {{b.fillstyle}}">
                                     <span>{{b.firstLetter}}</span>
                                 </div>
@@ -148,7 +148,7 @@ m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dro
                 </td>
                 <td data-field="f2" class="m-datatable__cell w2_hide">
                     <div class="w2">
-                    	{{b.postcode}} {{b.city}} <span *ngIf="b.is_street">, {{b.street}} {{b.street_n}}</span>
+                    	{{b.postcode}} {{b.city}}<span *ngIf="b.is_street">, {{b.street}} {{b.street_n}}</span>
                     </div>
                 </td>
                 <td data-field="f3" class="m-datatable__cell w3_hide" >
@@ -157,7 +157,10 @@ m-portlet__nav-link m-portlet__nav-link--icon m-portlet__nav-link--icon-xl m-dro
                     </div>
                 </td>
                 <td data-field="f4" class="m-datatable__cell w4_hide" >
-                    <span style="overflow: visible; " class="w4">                                     
+                    <span style="overflow: visible; " class="w4">   
+                    	<a href="javascript:;" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Pracownicy">
+                            <i class="flaticon flaticon-users" (click)="gotoGroup(b.id)" ></i>                      
+                        </a>                                   
                         <a routerLink="//index/company_br/edit/{{b.id}}" class="m-portlet__nav-link btn m-btn m-btn--hover-accent m-btn--icon m-btn--icon-only m-btn--pill" title="Edytuj">
                             <i class="la la-edit"></i>                      
                         </a>        

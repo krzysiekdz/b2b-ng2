@@ -18,13 +18,14 @@ export class BranchAddEditComponent {
 	loading=false;
 	error:boolean=false;
 	route_type:string='';//add lub edit
-	link_first:string='//index/company_br/list/1/100/!/id/1';
+	link_first_page:string='';
 	admin:boolean=false;
 
 	constructor(private _dataService: DataService, private _router: Router, private  _location: Location,
 		private _formService: FormService, private _settings: GlobalSettingsService, private _route: ActivatedRoute) {
 		this.user=this._dataService.getCurrentUserModel();
 		this.admin=this._dataService.test('admin')
+		this.link_first_page=this._settings.getStatic('branches_link');
 	}
 
 	ngOnInit() {
@@ -127,7 +128,7 @@ export class BranchAddEditComponent {
 	}
 
 	navigateFirst() {
-		this._router.navigate([this.link_first]);
+		this._router.navigate([this.link_first_page]);
 	}
 
 	goback() {

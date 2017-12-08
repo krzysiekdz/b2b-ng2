@@ -15,25 +15,63 @@ import { KeyAddEditComponent } from './bsx/theme/key-generation/key-add-edit/key
 import { ArticleComponent } from './bsx/theme/article/article.component';
 import { TemplatesListComponent } from './bsx/theme/templates/list/templates-list.component';
 import { TemplatesEditComponent } from './bsx/theme/templates/edit/templates-edit.component';
-import { ArticleAllComponent } from './bsx/theme/article-all/article-all.component';
-
-import { ThemeAllComponent } from './bsx/theme/theme-all/theme-all.component';
+import { EmptyComponent } from './bsx/theme/empty/empty.component';
 
 const routes: Routes = [
-	{ path: '', redirectTo: 'index', pathMatch: 'full' }, //przekierowanie ze sciezki '' na index
-    { path: 'index', component: ThemeComponent,
+	// { path: '', redirectTo: 'index', pathMatch: 'full' }, //przekierowanie ze sciezki '' na index
+ //    { path: 'index', component: ThemeComponent,
+	// 	children: [
+	// 		{ path: '', redirectTo: 'user', pathMatch: 'full' },
+	// 		{ path:'user', component:UserAddEditComponent},
+	// 		{ path:'company_users', component:CompanyProfileComponent,
+	// 			children: [
+	// 				{ path: '', redirectTo: 'list/1/10/!/c.id/1', pathMatch: 'full' },
+	// 				{ path: 'list/:start/:count/:search/:orderby/:orderbydesc', component: UserListComponent },
+	// 				{ path: 'add', component: UserAddEditComponent },
+	// 				{ path: 'edit/:id', component: UserAddEditComponent },
+	// 			]
+	// 		},
+	// 		{ path:'company_br', component:CompanyProfileComponent,
+	// 			children: [
+	// 				{ path: '', redirectTo: 'list/1/100/!/id/1', pathMatch: 'full' },
+	// 				{ path: 'list/:start/:count/:search/:orderby/:orderbydesc', component: BranchListComponent },
+	// 				{ path: 'add', component: BranchAddEditComponent },
+	// 				{ path: 'edit/:id', component: BranchAddEditComponent }
+	// 			]
+	// 		},
+	// 		{path:'keygen', component:KeyGenerationComponent,
+	// 			children: [
+	// 				{ path: '', redirectTo: 'list/1/10/!/!/id/1', pathMatch: 'full' },
+	// 				{ path: 'list/:start/:count/:search/:filters/:orderby/:orderbydesc', component: KeyListComponent },
+	// 				{ path: 'add', component: KeyAddEditComponent },
+	// 				{ path: 'edit/:id', component: KeyAddEditComponent },
+	// 			],
+	// 		},
+	// 		{path:'templates/list', component:TemplatesListComponent},
+	// 		{path:'templates/edit/:id', component:TemplatesEditComponent},
+	// 	]
+	// },
+	// { path: 'login', component: AuthComponent},
+	// { path: '**', component: ThemeComponent},
+	// { path: '**', redirectTo:'index', pathMatch:'full'  }, //kierowanie wszystkich niepasujacych adresow na index (musi to byc jako ostatnia definicja reguly)
+
+
+	{ path: '', component: ThemeComponent , 
 		children: [
-			{ path: '', redirectTo: 'user', pathMatch: 'full' },
-			{ path:'user', component:UserAddEditComponent},
-			{ path:'company_users', component:CompanyProfileComponent,
+			{ path:'index', component:EmptyComponent, children: [
+				{ path:'user', component:UserAddEditComponent},
+			]},
+			
+			{ path: '', redirectTo: 'index/keygen', pathMatch: 'full' },
+			{ path:'index/company_users', component:CompanyProfileComponent,
 				children: [
-					{ path: '', redirectTo: 'list/1/10/!/c.id/1', pathMatch: 'full' },
-					{ path: 'list/:start/:count/:search/:orderby/:orderbydesc', component: UserListComponent },
+					{ path: '', redirectTo: 'list/1/10/!/!/c.id/1', pathMatch: 'full' },
+					{ path: 'list/:start/:count/:search/:filters/:orderby/:orderbydesc', component: UserListComponent },
 					{ path: 'add', component: UserAddEditComponent },
 					{ path: 'edit/:id', component: UserAddEditComponent },
 				]
 			},
-			{ path:'company_br', component:CompanyProfileComponent,
+			{ path:'index/company_br', component:CompanyProfileComponent,
 				children: [
 					{ path: '', redirectTo: 'list/1/100/!/id/1', pathMatch: 'full' },
 					{ path: 'list/:start/:count/:search/:orderby/:orderbydesc', component: BranchListComponent },
@@ -41,7 +79,7 @@ const routes: Routes = [
 					{ path: 'edit/:id', component: BranchAddEditComponent }
 				]
 			},
-			{path:'keygen', component:KeyGenerationComponent,
+			{path:'index/keygen', component:KeyGenerationComponent,
 				children: [
 					{ path: '', redirectTo: 'list/1/10/!/!/id/1', pathMatch: 'full' },
 					{ path: 'list/:start/:count/:search/:filters/:orderby/:orderbydesc', component: KeyListComponent },
@@ -49,13 +87,13 @@ const routes: Routes = [
 					{ path: 'edit/:id', component: KeyAddEditComponent },
 				],
 			},
-			{path:'templates/list', component:TemplatesListComponent},
-			{path:'templates/edit/:id', component:TemplatesEditComponent},
+			{path:'index/templates/list', component:TemplatesListComponent},
+			{path:'index/templates/edit/:id', component:TemplatesEditComponent},
+
+			{ path: 'login', component: AuthComponent},
+			{ path: '**', component: ArticleComponent},
 		]
-	},
-	{ path: 'login', component: AuthComponent},
-	{ path: '**', component: ThemeComponent},
-	// { path: '**', redirectTo:'index', pathMatch:'full'  }, //kierowanie wszystkich niepasujacych adresow na index (musi to byc jako ostatnia definicja reguly)
+	}
 ];
 
 @NgModule({

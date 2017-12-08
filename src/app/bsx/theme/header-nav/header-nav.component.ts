@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { Helpers } from '../../../helpers';
 
 declare let mLayout: any;
+var selectedItem:string='';
+
 @Component({
 	selector: 'header-nav',
 	templateUrl: './header-nav.component.html',
@@ -42,10 +44,18 @@ export class HeaderNavComponent {
 
         mLayout.initHeader();
 
+        //chowanie menu po kliknieciu, oraz łatka na 2 przyciski, aby po kliknieciu byly podswietlone
         (<any>jQuery('#menu_left a[href!="#"]')).click(function(e) {
-			(<any>jQuery('#m_header_menu')).removeClass('m-aside-header-menu-mobile--on');
-			(<any>jQuery('body')).removeClass('m-aside-header-menu-mobile--on');
 			(<any>jQuery('#m_aside_header_menu_mobile_toggle')).trigger('click');
+
+			var href=$(this).attr('href').split('/')[2];
+			if(selectedItem=='company_br') $('#submenu_item_branches').removeClass('m-menu__item--active');
+			else if(selectedItem=='company_users') $('#submenu_item_users').removeClass('m-menu__item--active');
+
+			selectedItem=href;
+			if(href=='company_br') $('#submenu_item_branches').addClass('m-menu__item--active');
+			else if(href=='company_users') $('#submenu_item_users').addClass('m-menu__item--active');
+
 		});
     }
 
@@ -64,6 +74,9 @@ export class HeaderNavComponent {
 
     menuLeftClick() {
     	(<any>jQuery('#menu_left').css('display','block'));
+    	(<any>jQuery('#menu_branch').css('display','block'));
+    	(<any>jQuery('#menu_item_branch').addClass('m-menu__item--open'));
+    	(<any>jQuery('#menu_item_left').addClass('m-menu__item--open'));
     }
 
 }
